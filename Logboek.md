@@ -14,4 +14,4 @@
 *
 *
 
-# Totale duur : .. uur
+# Totale duur : 3,5 uur
