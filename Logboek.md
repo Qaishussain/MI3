@@ -10,6 +10,7 @@
 * ERD voor onze database begonnen: 1 uur
 * Database implementatie: 1 uur
 * Schets van indexpagina: 0,5 uur
+![img_0489](https://user-images.githubusercontent.com/32386896/46582967-80630400-ca4f-11e8-9f02-296239bac06c.JPG)
 * Link: https://www.youtube.com/watch?v=ZI0BgDQvCS8 : 0,25 uur
 
 ## Week 3 - .. uur
