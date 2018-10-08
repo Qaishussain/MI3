@@ -5,7 +5,7 @@
 * Partner en onderwerp gekozen voor project: 0,5 uur
 * Opzoeken van informatie voor Project en gegevens verzamelen: 2 uur
 
-## Week 2 - 5,65 uur
+## Week 2 - 6,05 uur
 * 2de les overlopen thuis: 1 uur
 * Samen met partner besproken hoe we onze project zullen beginnen en wat het allemaal gaat inhouden: 0,5 uur
 * ERD voor onze database begonnen: 1 uur
@@ -21,4 +21,4 @@
 *
 *
 
-# Totale duur : 9,20 uur
+# Totale duur : 9,55 uur
