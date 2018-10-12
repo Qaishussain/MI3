@@ -16,9 +16,10 @@
 * Link: https://www.youtube.com/watch?v=3XnGe6i33Hk : 0,40 uur
 * Framework7 klaar maken voor index pagina(nog niet af): 1 uur
 
-## Week 3 - .. uur
-*
-*
-*
+## Week 3 - 7 uur
+* Les 3 installatie cordova: 2 uur
+* 3de les overlopen thuis: 1 uur --> installaties in orde brengen
+* Framework7 klaar maken voor index pagina(af): 2 uur
+* Verder met routes en paginas: 2 uur
 
-# Totale duur : 9,55 uur
+# Totale duur : 16,55 uur
