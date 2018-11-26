@@ -14,6 +14,12 @@ Vue.component('locatie', {
   template: '#locatie'
 });
 
+Vue.component('login', {
+  template: '#login'
+});
+Vue.component('registratie', {
+  template: '#registratie'
+});
 
 
 Vue.component('page-not-found', {
@@ -46,6 +52,14 @@ new Vue({
 		{
         path: '/locatie/',
         component: 'locatie'
+      },
+        {
+        path: '/login/',
+        component: 'login'
+      },
+          {
+        path: '/registratie/',
+        component: 'registratie'
       },
           
       {

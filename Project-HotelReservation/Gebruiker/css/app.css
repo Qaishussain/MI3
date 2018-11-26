@@ -1,0 +1,48 @@
+
+
+.btnBookNow{
+ display:inline-block;
+ padding:0.3em 1.2em;
+ margin:0 0.3em 0.3em 0;
+ border-radius:2em;
+ box-sizing: border-box;
+ text-decoration:none;
+ font-family:'Roboto',sans-serif;
+ font-weight:300;
+ color:#FFFFFF;
+ background-color:#4eb5f1;
+ text-align:center;
+ transition: all 0.2s;
+}
+.btnBookNow:hover{
+ background-color:#4095c6;
+}
+@media all and (max-width:30em){
+.btnBookNow{
+  display:block;
+  margin:0.2em auto;
+ }
+}
+
+#btnBookNow{
+    width: 100%;
+    background-color: #008CBA; /* Green */
+    border: 2px solid #008CBA;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    
+   
+    -webkit-transition-duration: 0.2s; 
+ 
+}
+#btnBookNow:hover {
+    background-color: white ;
+    color: #008CBA;
+}
+
+
+ 

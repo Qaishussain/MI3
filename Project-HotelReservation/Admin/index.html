@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Admin</title>
+
+    <link rel="stylesheet" href="libs/framework7/css/framework7.min.css">
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+
+
+
+    <div id="app">
+
+        <!-- Statusbar -->
+        <f7-statusbar></f7-statusbar>
+
+        <!-- Left Panel -->
+        <f7-panel left reveal theme-dark>
+            <f7-view id="left-panel-view">
+                <f7-page>
+                    <f7-navbar title="Menu"></f7-navbar>
+
+                    <f7-block-title></f7-block-title>
+                    <f7-list>
+                        <f7-list-item link="/reservation/" title="Reservaties" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item onclick="getKamers();" Link="/kamers/" title="Kamers" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item Link="/klanten/" onclick="GetKlanten();" title="Klanten" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item  onclick="tecontacteren();" Link="/tecontact/" title="Contact" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item onclick="getProfile();" link="/account/" title="Account" view="#main-view" panel-close></f7-list-item>
+
+                    </f7-list>
+
+                    <f7-list>
+                        <f7-list-item onclick="afmelden();" title="Logout" view="#main-view" panel-close></f7-list-item>
+
+                    </f7-list>
+                    <f7-block-title>2018</f7-block-title>
+                </f7-page>
+            </f7-view>
+        </f7-panel>
+
+
+
+
+        <!-- Main View -->
+        <f7-view id="main-view" main>
+            <f7-page>
+                <f7-navbar>
+                    <f7-nav-left>
+                        <f7-link icon-if-ios="f7:menu" icon-if-md="material:menu" panel-open="left"></f7-link>
+                    </f7-nav-left>
+                    <f7-nav-title>Reservaties</f7-nav-title>
+
+                </f7-navbar>
+
+                <f7-block strong>
+
+                    <p>Gemaakte reservaties</p>
+
+
+
+                </f7-block>
+
+            </f7-page>
+
+            <div class="toolbar tabbar-labels toolbar-bottom-md">
+                <div class="toolbar-inner">
+                    <a href="/reservation/" class="tab-link tab-link-active" id="reservationtab">
+                        <i class="icon f7-icons ios-only">view_list</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill">view_list_fill</i>
+                        <i class="icon material-icons md-only">view_list</i>
+                        <span class="tabbar-label">Reservaties</span>
+                    </a>
+                    <a onclick="getKamers();"  href="/kamers/" class="tab-link" id="kamertab">
+                        <i class="icon f7-icons ios-only">dashboard</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill">dashboard_fill</i>
+                        <i class="icon material-icons md-only">dashboard</i>
+                        <span class="tabbar-label">Kamers</span>
+                    </a>
+
+                    <a href="/account/" onclick="getProfile();" class="tab-link" id="accounttab">
+                        <i class="icon f7-icons ios-only">account_box</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill">account_box_fill</i>
+                        <i class="icon material-icons md-only">account_box</i>
+                        <span class="tabbar-label">Profile</span>
+                    </a>
+                    <a href="" onclick="afmelden();" class="tab-link" id="logout">
+                        <i class="icon f7-icons ios-only">exit_to_app</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill">exit_to_app_fill</i>
+                        <i class="icon material-icons md-only">exit_to_app</i>
+                        <span class="tabbar-label">logout</span>
+                    </a>
+
+
+                </div>
+            </div>
+        </f7-view>
+
+
+
+    </div>
+
+    <!-- reservation Pagina -->
+    <template id="reservation">
+        <f7-page>
+            <f7-navbar title="Reservaties" back-link="Back"></f7-navbar>
+            <f7-block-title>Reservaties</f7-block-title>
+            <f7-block strong>
+
+            </f7-block>
+        </f7-page>
+
+    </template>
+
+    <!-- Te contacteren Pagina -->
+    <template id="tecontact">
+        <f7-page>
+            <f7-navbar title="Contact" back-link="Back"></f7-navbar>
+            <f7-block-title>Contact</f7-block-title>
+            <f7-block strong>
+                <div id="contacten" class="content-block-inner">
+
+
+                </div>
+            </f7-block>
+        </f7-page>
+
+    </template>
+    <!-- account Pagina -->
+    <template id="account">
+        <f7-page>
+            <f7-navbar title="Profiel" back-link="Back"></f7-navbar>
+            <f7-block-title>Profiel Wijzigen</f7-block-title>
+            <f7-block strong>
+                <f7-list form>
+                    <f7-list-item>
+                        <f7-label>Nr.</f7-label>
+                        <f7-input type="text" id="Admin_id" readonly></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>First Name</f7-label>
+                        <f7-input type="text" id="Ad_Voornaam"></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Last name</f7-label>
+                        <f7-input type="text" id="Ad_Naam" required></f7-input>
+                    </f7-list-item>
+
+                    <f7-list-item>
+                        <f7-label>Phone</f7-label>
+                        <f7-input type="tel" id="Ad_Phone" required></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Gender</f7-label>
+                        <f7-input type="select" id="Ad_Geslacht" required>
+                            <option selected>Male</option>
+                            <option>Female</option>
+                        </f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Birth date</f7-label>
+                        <f7-input type="date" id="Ad_Geboortedatum" required></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Street</f7-label>
+                        <f7-input type="text" id="Ad_Straat" required></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Town</f7-label>
+                        <f7-input type="text" id="Ad_Gemeente" required></f7-input>
+
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Postcode</f7-label>
+                        <f7-input type="text" id="Ad_Postcode" required></f7-input>
+
+                    </f7-list-item>
+
+                    <f7-list-item>
+                        <f7-label>E-mail</f7-label>
+                        <f7-input type="email" id="Ad_Email" readonly required></f7-input>
+                    </f7-list-item>
+
+                    <f7-list-item>
+                        <f7-label>Password</f7-label>
+                        <f7-input type="password" id="Ad_Password"></f7-input>
+                    </f7-list-item>
+
+                    <f7-button class="col" small round fill onclick="AccountBewerken();">Bewerken</f7-button><br>
+
+                    <f7-button class="col" small round fill onclick="AccountVerwijderen();">Verwijder mijn account</f7-button>
+
+
+
+                </f7-list>
+            </f7-block>
+
+
+        </f7-page>
+
+    </template>
+
+    <!-- klanten Pagina -->
+    <template id="klanten">
+        <f7-page>
+            <f7-navbar title="Klanten" back-link="Back"></f7-navbar>
+            <f7-block-title>Hieronder kan jij alle klanten raadplegen.</f7-block-title>
+            <f7-block strong>
+                <div id="klanten" class="content-block-inner">
+
+
+                </div>
+
+
+
+            </f7-block>
+        </f7-page>
+
+    </template>
+
+
+    <!-- kamers Pagina -->
+    <template id="kamers">
+        <f7-page>
+            <f7-navbar title="Kamers" back-link="Back"></f7-navbar>
+            <f7-block-title>Kamers </f7-block-title>
+            <f7-block strong>
+
+                  <div id="getKamer" class="content-block-inner">
+
+
+                </div>
+
+
+            </f7-block>
+        </f7-page>
+
+    </template>
+
+<!-- popup -->
+       <div class="popup" id="MyPopup">
+      <div class="view">
+        <div class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="title">Klant Info</div>
+              <div class="right">
+                <a href="#" class="link popup-close" onclick="" >Close</a>
+              </div>
+            </div>
+          </div>
+          <div class="page-content">
+            <div class="block">
+                <div id="popup" class="content-block-inner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ <!-- popup -->
+       <div class="popup" id="MyPopupKamer">
+      <div class="view">
+        <div class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="title">Kamer Info Bewerken</div>
+              <div class="right">
+                <a href="#"  class="link popup-close" @click="$f7router.navigate('/kamers/')">Close</a>
+              </div>
+            </div>
+          </div>
+          <div class="page-content">
+            <div class="block">
+                <div id="popupKamer" class="content-block-inner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+                         
+
+
+
+
+    <!-- Page Not Found Template -->
+    <template id="page-not-found">
+        <f7-page>
+            <f7-navbar title="Not found" back-link="Back"></f7-navbar>
+            <f7-block strong>
+                <p>Sorry</p>
+                <p>Requested content not found.</p>
+            </f7-block>
+        </f7-page>
+    </template>
+    <!-- Cordova -->
+    <!--
+  <script src="cordova.js"></script>
+  -->
+
+    <!-- Framework7 library -->
+    <script src="libs/framework7/js/framework7.min.js"></script>
+
+    <!-- Vue -->
+    <script src="libs/vue/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!-- Framework7-Vue plugin -->
+    <script src="libs/framework7-vue/framework7-vue.min.js"></script>
+
+    <!-- Your custom app scripts -->
+    <script src="js/app.js"></script>
+
+    <script src="js/O-hotel.js" type="text/javascript"></script>
+</body>
+
+</html>

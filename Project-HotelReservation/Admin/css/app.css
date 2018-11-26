@@ -1,0 +1,135 @@
+.test-swiper .swiper-slide {
+  font-size: 25px;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  color: #000;
+}
+.test-swiper .swiper-slide {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.test-swiper {
+  margin: 0px 0 35px;
+  font-size: 18px;
+  height: 400px;
+}
+.test-swiper.test-swiper-auto .swiper-slide {
+  width: 85%;
+}
+.test-swiper.test-swiper-auto .swiper-slide:nth-child(2n) {
+  width: 70%;
+}
+.test-swiper.test-swiper-auto .swiper-slide:nth-child(3n) {
+  width: 30%;
+}
+ .google-maps {
+        position: relative;
+        padding-bottom: 100%;
+        height: 0;
+        overflow: hidden;
+    }
+    .google-maps iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+
+ 
+#btnKamer {
+ display:inline-block;
+ padding:0.3em 1.2em;
+ margin:0 0.3em 0.3em 0;
+ border-radius:2em;
+ box-sizing: border-box;
+ text-decoration:none;
+ font-family:'Roboto',sans-serif;
+ font-weight:300;
+ color:#FFFFFF;
+ background-color:#4eb5f1;
+ text-align:center;
+ transition: all 0.2s;
+}
+#btnKamer:hover{
+ background-color:#4095c6;
+}
+@media all and (max-width:30em){
+.#btnKamer{
+  display:block;
+  margin:0.2em auto;
+ }
+}
+
+#btnKamer{
+    width: 100%;
+    background-color: #008CBA; /* Green */
+    border: 2px solid #008CBA;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    
+   
+    -webkit-transition-duration: 0.2s; 
+ 
+}
+#btnKamer:hover {
+    background-color: white ;
+    color: #008CBA;
+}
+#btnBewerkKamer {
+ display:inline-block;
+ padding:0.3em 1.2em;
+ margin:0 0.3em 0.3em 0;
+ border-radius:2em;
+ box-sizing: border-box;
+ text-decoration:none;
+ font-family:'Roboto',sans-serif;
+ font-weight:300;
+ color:#FFFFFF;
+ background-color:#4eb5f1;
+ text-align:center;
+ transition: all 0.2s;
+}
+#btnBewerkKamer:hover{
+ background-color:#4095c6;
+}
+@media all and (max-width:30em){
+.#btnBewerkKamer{
+  display:block;
+  margin:0.2em auto;
+ }
+}
+
+#btnBewerkKamer{
+    width: 100%;
+    background-color: #008CBA; /* Green */
+    border: 2px solid #008CBA;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    
+   
+    -webkit-transition-duration: 0.2s; 
+ 
+}
+#btnBewerkKamer:hover {
+    background-color: white ;
+    color: #008CBA;
+}
+
+
+ 
+
+ 

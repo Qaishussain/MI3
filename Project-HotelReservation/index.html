@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#2196f3">
+    <meta name="theme-color" content="#fff">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <title>O-Hotel</title>
@@ -16,31 +17,8 @@
 </head>
 
 <body>
-    <!-- Views/Tabs container 
-    <div class="views tabs ios-edges">
-      
-      <div class="toolbar tabbar-labels toolbar-bottom-md">
-        <div class="toolbar-inner">
-          <a href="#view-home" class="tab-link tab-link-active">
-            <i class="icon f7-icons ios-only">home</i>
-            <i class="icon f7-icons ios-only icon-ios-fill">home_fill</i>
-            <i class="icon material-icons md-only">home</i>
-            <span class="tabbar-label">Home</span>
-          </a>
-          <a href="#view-catalog" class="tab-link">
-            <i class="icon f7-icons ios-only">list</i>
-            <i class="icon f7-icons ios-only icon-ios-fill">list_fill</i>
-            <i class="icon material-icons md-only">view_list</i>
-            <span class="tabbar-label">Catalog</span>
-          </a>
-          <a href="#view-settings" class="tab-link">
-            <i class="icon f7-icons ios-only">settings</i>
-            <i class="icon f7-icons ios-only icon-ios-fill">settings_fill</i>
-            <i class="icon material-icons md-only">settings</i>
-            <span class="tabbar-label">Settings</span>
-          </a>
-        </div>
-      </div><!-- Tabbar for switching views-tabs -->
+
+
     <div id="app">
 
         <!-- Statusbar -->
@@ -55,14 +33,14 @@
                     <f7-block-title></f7-block-title>
                     <f7-list>
                         <f7-list-item Link="/home/" title="Home" view="#main-view" panel-close></f7-list-item>
-                        <f7-list-item link="/kamers/" title="Kamers" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item onclick="KamersOphalen();" link="/kamers/" title="Kamers" view="#main-view" panel-close></f7-list-item>
                         <f7-list-item link="/contact/" title="Contact" view="#main-view" panel-close></f7-list-item>
                         <f7-list-item link="/locatie/" title="Locatie" view="#main-view" panel-close></f7-list-item>
 
                     </f7-list>
 
                     <f7-list>
-                        <f7-list-item link="//" title="Book Now" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item link="/login/" title="Book Now" view="#main-view" panel-close></f7-list-item>
 
                     </f7-list>
                     <f7-block-title>2018</f7-block-title>
@@ -74,7 +52,7 @@
 
 
         <!-- Main View -->
-        <f7-view id="main-view" main>
+        <f7-view id="main-view" main class="view view-main  ">
             <f7-page>
                 <f7-navbar>
                     <f7-nav-left>
@@ -85,39 +63,78 @@
                 </f7-navbar>
 
                 <f7-block strong>
-                    <p>Here is your blank Framework7 app. Let's see what we have here.</p>
+                    <p>O-hotel Brussels City Centre is centraal gelegen in hartje Brussel, vlak bij de grootste winkelstraat van de stad en 10 minuten van de Grote Markt. Het hotel is goed bereikbaar met het openbaar vervoer.</p>
+                    <p>Hieronder Kan jij fotos over ons htel raadplegen</p>
 
+                    <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto">
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-wrapper">
 
+                            <div class="swiper-slide"><img src="Images/Badkamers/Screenshot%202018-11-05%20at%2013.51.17.png"></div>
+                            <div class="swiper-slide"><img src="Images/Badkamers/Screenshot%202018-11-05%20at%2014.36.14.png"></div>
+                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/2persoonskamer.jpg"></div>
+                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2013.51.26.png"></div>
+                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2013.51.43.png"></div>
+                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2014.35.39.png"></div>
+                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2014.35.57.png"></div>
+                        </div>
+                    </div>
 
                 </f7-block>
-                <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="50" class="swiper-container swiper-init test-swiper">
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">Slide 1</div>
-                        <div class="swiper-slide">Slide 2</div>
-                        <div class="swiper-slide">Slide 3</div>
-                        <div class="swiper-slide">Slide 4</div>
-                        <div class="swiper-slide">Slide 5</div>
-                        <div class="swiper-slide">Slide 6</div>
-                        <div class="swiper-slide">Slide 7</div>
-                        <div class="swiper-slide">Slide 8</div>
-                        <div class="swiper-slide">Slide 9</div>
-                        <div class="swiper-slide">Slide 10</div>
-                    </div>
-                </div>
+                <f7-block strong>
+
+                    <p>O-hotel heeft een uitstekend uitzicht, u kan zich lekker ontspannen. Het hotel is zeer mooi ingericht, het heeft een prachtige ligging en biedt een zwembad, een spabad en een fitnessruimte aan die u mag gebruiken. De meeste kamers
+                        zijn milieuvriendelijk en hebben een mooi uitzicht op de natuur. Ons hotel beschikt over een zeer gezellige sfeer. </p>
+                    <f7-swiper pagination navigation scrollbar>
+                        <f7-swiper-slide><img src="Images/Badkamers/Screenshot%202018-11-05%20at%2013.51.17.png">Slide 1</f7-swiper-slide>
+                        <f7-swiper-slide><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2013.51.26.png">Slide 2</f7-swiper-slide>
+                        <f7-swiper-slide><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2014.35.57.png">Slide 3</f7-swiper-slide>
+                    </f7-swiper>
+                </f7-block>
 
             </f7-page>
-        </f7-view>
 
+            <div class="toolbar tabbar-labels toolbar-bottom-md">
+                <div class="toolbar-inner ">
+                    <a href="/home/" class="tab-link" id="hometab">
+                        <i class="icon f7-icons ios-only">home</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill">home_fill</i>
+                        <i class="icon material-icons md-only">home</i>
+                        <span class="tabbar-label">Home</span>
+                    </a>
+                    <a onclick="KamersOphalen();" href="/kamers/" class="tab-link " id="kamertab">
+                        <i class="icon f7-icons ios-only">list</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill">list_fill</i>
+                        <i class="icon material-icons md-only">view_list</i>
+                        <span class="tabbar-label">Kamers</span>
+                    </a>
+
+                    <a href="/login/" class="tab-link " id="logintab">
+                        <i class="icon f7-icons ios-only">account_box</i>
+                        <i class="icon f7-icons ios-only icon-ios-fill ">account_box_fill</i>
+                        <i class="icon material-icons md-only ">account_box</i>
+                        <span class="tabbar-label">Login</span>
+                    </a>
+                </div>
+            </div>
+
+        </f7-view>
     </div>
+
+
+
+
 
     <!-- Kamers Pagina -->
     <template id="kamers">
         <f7-page>
             <f7-navbar title="Kamers" back-link="Back"></f7-navbar>
-            <f7-block-title>Kamers</f7-block-title>
+
             <f7-block strong>
-                
+                <div id="kamers" class="content-block-inner">
+
+
+                </div>
             </f7-block>
         </f7-page>
 
@@ -132,25 +149,26 @@
 
                 <f7-list-item>
                     <f7-label>Name</f7-label>
-                    <f7-input type="text" placeholder="Name"></f7-input>
+                    <f7-input type="text" placeholder="Name" id="nameContact"></f7-input>
                 </f7-list-item>
 
                 <f7-list-item>
                     <f7-label>E-mail</f7-label>
-                    <f7-input type="email" placeholder="E-mail"></f7-input>
+                    <f7-input type="email" placeholder="E-mail" id="emailContact"></f7-input>
                 </f7-list-item>
 
                 <f7-list-item>
                     <f7-label>Phone</f7-label>
-                    <f7-input type="tel" placeholder="Phone"></f7-input>
+                    <f7-input type="tel" placeholder="Phone" id="gsmnummerContact"></f7-input>
                 </f7-list-item>
 
 
                 <f7-list-item>
                     <f7-label>Message</f7-label>
-                    <f7-input type="textarea" placeholder="Schrijf u vraag hier...."></f7-input>
-                    <f7-button class="col" small round fill>Small Round</f7-button>
+                    <f7-input type="textarea" placeholder="Schrijf u vraag hier...." id="messageContact"></f7-input>
+                    <f7-button class="col" small round fill onclick="Contact();"> Send </f7-button>
                 </f7-list-item>
+
 
             </f7-list>
 
@@ -166,11 +184,115 @@
             <f7-block-title>Hieronder bevinden de contact gegeven</f7-block-title>
             <f7-block strong>
                 <div class="google-maps">
-               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.0396418738646!2d4.354253415795696!3d50.84895017953234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c38068797673%3A0xf3022078a3352beb!2sRue+Montagne+aux+Herbes+Potag%C3%A8res+26%2C+1000+Bruxelles!5e0!3m2!1sen!2sbe!4v1539944827618" width="auto" height="auto" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.0396418738646!2d4.354253415795696!3d50.84895017953234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c38068797673%3A0xf3022078a3352beb!2sRue+Montagne+aux+Herbes+Potag%C3%A8res+26%2C+1000+Bruxelles!5e0!3m2!1sen!2sbe!4v1539944827618" width="auto" height="auto" frameborder="0" style="border:0" allowfullscreen></iframe></div>
             </f7-block>
         </f7-page>
 
     </template>
+
+    <!-- Registratie Pagina -->
+    <template id="registratie">
+        <f7-page>
+            <f7-navbar title="Registereren" back-link="Back"></f7-navbar>
+            <f7-block-title>Gelieve alle velden in te vullen om te registereren</f7-block-title>
+            <f7-block strong>
+                <f7-list form>
+                    <f7-list-item>
+                        <f7-label>First Name</f7-label>
+                        <f7-input type="text" placeholder="First Name" id="Voornaam"></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Last name</f7-label>
+                        <f7-input type="text" placeholder="last Name" id="Naam"></f7-input>
+                    </f7-list-item>
+
+                    <f7-list-item>
+                        <f7-label>Phone</f7-label>
+                        <f7-input type="tel" placeholder="Phone" id="Phone"></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Gender</f7-label>
+                        <f7-input type="select" id="Geslacht">
+                            <option selected>Male</option>
+                            <option>Female</option>
+                        </f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Birth date</f7-label>
+                        <f7-input type="date" placeholder="Birth date" value="2014-04-30" id="Geboortedatum"></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Street</f7-label>
+                        <f7-input type="text" placeholder="Street" id="Straat"></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Town</f7-label>
+                        <f7-input type="text" placeholder="Town" id="Gemeente"></f7-input>
+
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Postcode</f7-label>
+                        <f7-input type="text" placeholder="Postcode" id="Postcode"></f7-input>
+
+                    </f7-list-item>
+
+                    <f7-list-item>
+                        <f7-label>E-mail</f7-label>
+                        <f7-input type="email" placeholder="E-mail" id="Email"></f7-input>
+                    </f7-list-item>
+
+                    <f7-list-item>
+                        <f7-label>Password</f7-label>
+                        <f7-input type="password" placeholder="Password" id="Password"></f7-input>
+                    </f7-list-item>
+
+                    <f7-button class="col" small round fill onclick="inschrijven();">Register</f7-button>
+
+
+
+                </f7-list>
+            </f7-block>
+        </f7-page>
+
+    </template>
+    <!-- Login Pagina -->
+    <template id="login">
+        <f7-page>
+            <f7-navbar title="Login" back-link="Back"></f7-navbar>
+
+            <f7-block-title>Gelieve alle velden in te vullen om te Inloggen</f7-block-title>
+            <f7-block strong>
+                <f7-list form>
+                    <f7-list-item>
+                        <f7-label>Email</f7-label>
+                        <f7-input name="Email" placeholder="Email" type="text" id="LEmail"></f7-input>
+                    </f7-list-item>
+                    <f7-list-item>
+                        <f7-label>Password</f7-label>
+                        <f7-input name="password" type="password" placeholder="Password" id="Lpassword"></f7-input>
+                    </f7-list-item>
+
+                    <f7-list-item>
+                      
+                        <f7-label>User level</f7-label>
+                        <f7-input type="select" id="usrlevel">
+                            <option selected>klant</option>
+                            <option>admin</option>
+                        </f7-input>
+
+
+                    </f7-list-item>
+
+                    <f7-button class="col" small round fill onclick="checkLogin();">Sign in</f7-button>
+
+                    <p> Click here to <a href="/registratie/">Register</a></p>
+
+                </f7-list>
+            </f7-block>
+        </f7-page>
+
+    </template>
+
     <!-- Page Not Found Template -->
     <template id="page-not-found">
         <f7-page>
@@ -181,7 +303,6 @@
             </f7-block>
         </f7-page>
     </template>
-
     <!-- Cordova -->
     <!--
   <script src="cordova.js"></script>
@@ -198,6 +319,9 @@
 
     <!-- Your custom app scripts -->
     <script src="js/app.js"></script>
-    <script src="js/O-hotel.js"></script>
+
+    <script src="js/O-hotel.js" type="text/javascript"></script>
+
 </body>
+
 </html>
