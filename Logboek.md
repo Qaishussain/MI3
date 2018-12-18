@@ -1,9 +1,11 @@
 # Logboek MI3 - Qais Hussain
-## Week 1 - 3,5 uur
+## Week 1 - 7,5 uur
 * Installatie Xampp
 * Overlopen van les 1: ongeveer 1 uur
 * Partner en onderwerp gekozen voor project: 0,5 uur
 * Opzoeken van informatie voor Project en gegevens verzamelen: 2 uur
+* Cordova instalatie - 2 uur
+* Probleem bij daemon process - 2 uur
 
 ## Week 2 - 6,05 uur
 * 2de les overlopen thuis: 1 uur
@@ -71,12 +73,38 @@
  * Annuleren functie gemaakt met controle - 4 uur
  * Anneleren togepast in admingedeelte - 2 uur
  * Afgewerkt versie van hybride - 4 uur
-## Week 10 - 
+ 
+## Week 10 - 19 uur
  * Afgewerkt versie aan de leerkracht tonen - 1 uur
  * Feedback => aanpassen van database :(
  * Opnieuw database aanpassen - 5 uur
  * Probleem bij het leggen van relaties opgelost - 2 uur
  * Nieuwe versie van database =>
+ ![image](https://user-images.githubusercontent.com/32386896/50149287-12db1b80-02bb-11e9-9575-723c46aaf3f8.png)
+ * Opnieuw alles aanpassen ( bezoekergedeelte + KlantGedeelte + Admingedeelte ) - 8 uur
+ * Aanpassen van php pagina - 2 uur
+ * Probleem bij het ophalen van Kamers => Niet alle kamers verden uitgehaald => - 1 uur
  
+ ## Week 11 - 40 uur
+  * Probleem bij het ophalen van kamers opgelost - 1 uur
+  * Aanmaken van Password reset - 3 uur
+  * Probleem met SMTP => opgelost - 4 uur
+  * Probleem bij het sturen van email " Password authentication failed " => 4 uur
+  * Probleem met password opgelost - 1 uur
+  * Password reset af - 2 uur
+  * Formulier Timer aangepast - 4 uur
+  * Check In Reservatie  toegepast - 4 uur
+  * Check In control toegeapst 
+  * Check out toegepast - 2 uur
+  * php aangepast - 2 uur
+  * Logo aangepast cordova - 3 uur
+  * Applicatie apk gemaakt 
+  * Aanapassing van reservaties opnieuw - 5 uur
+  * Probleem  php querry bij het controlleren van bestaande reservations - 5 uur
+  
+ ## Week 12 -
+  * Laatste versie van applicatie aan leerkracht getoond voor feedback
+  * feedback => Goed dus Apk AF.
+  * Logboek verder afgewerkt.
  
-# Totale duur : __ uur
+# Totale duur : 178,05 uur
