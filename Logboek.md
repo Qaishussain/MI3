@@ -62,7 +62,21 @@
   * Probleem: Kan id's niet lezen: beschouwd als lege velden - 2 uur
   * Verder werken aan Reservatie systeem op te bowuen met groep - 2 uur
   
-## Week 9 - 
+## Week 9 - 25 uur 
+ * Reservatie systeem afgewerkt - 5uur
+ * Controls gemaakt bij het invoeren van datums - 2 uur
+ * Probleem bij het controleren van datumopgelost - 2 uur
+ * Reservatie met controle afgewerkt - 1 uur
+ * Tonen van reservatie in Admin gedeelte - 5 uur
+ * Annuleren functie gemaakt met controle - 4 uur
+ * Anneleren togepast in admingedeelte - 2 uur
+ * Afgewerkt versie van hybride - 4 uur
 ## Week 10 - 
+ * Afgewerkt versie aan de leerkracht tonen - 1 uur
+ * Feedback => aanpassen van database :(
+ * Opnieuw database aanpassen - 5 uur
+ * Probleem bij het leggen van relaties opgelost - 2 uur
+ * Nieuwe versie van database =>
+ 
  
 # Totale duur : __ uur
