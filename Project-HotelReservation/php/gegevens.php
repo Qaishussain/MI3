@@ -4,6 +4,7 @@ header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 require "Connection.php" ; 
+//require "Connection2.php" ; 
 
   
 // bewerking ophalen
@@ -66,8 +67,8 @@ if ($bewerking == "check") {
             $gsmContact = $_POST['gsmContact'];
             $messageContact = $_POST['messageContact'];  
         
-            if ($conn -> query("insert into Contact (Naam, email, gsmnummer, Message) values('".$nameContact."','".$emailContact."','".$gsmContact."','".$messageContact."')") === TRUE) { // into $t
-                
+            if ($conn -> query("insert into Contact (Naam, email, gsmnummer, Message) values('".$nameContact."','".$emailContact."','".$gsmContact."','".$messageContact."')")) { // into $t
+            
             die(json_encode(1));
         } else {
              die(json_encode(2, $conn -> error));
@@ -118,9 +119,11 @@ if ($conn -> query("insert into klanten (naam, voornaam, geslacht, geboortedatum
     } 
 
  }elseif($bewerking =="GetKamers"){
-    if($result = $conn -> query("SELECT * FROM kamers ")){
-        
-     
+    if($result = $conn -> query("SELECT soort_kamer.soort_id , soort_kamer.soort_kamer, soort_kamer.beschrijving, 
+    soort_kamer.personen, soort_kamer.prijs, kamers.kamers_id, kamers.id_soort, kamers.beschikbaar from soort_kamer, kamers 
+    WHERE soort_kamer.soort_id = kamers.id_soort GROUP BY soort_kamer.soort_id")){
+
+
         // maak van de inhoud van deze result een json object waarvan
         // ook in android de juiste gegeventypes herkend worden
        $return = getJsonObjFromResult($result);
@@ -134,6 +137,21 @@ if ($conn -> query("insert into klanten (naam, voornaam, geslacht, geboortedatum
     
     }
     
+}elseif($bewerking == "changePassword"){
+    if(isset($_POST['password']) && isset($_POST['email'])){
+        $pass = md5($_POST['password']);
+        $ema = $_POST['email'];
+        if ($conn -> query("UPDATE klanten SET password = '".$pass."'
+                WHERE email = '".$ema."'") === TRUE) { // FROM $t
+                die(json_encode(1));
+            } else {
+                 die(json_encode(2 . $conn -> error));
+            }    
+
+
+    }else{
+        echo "missing data";
+    }
 }
 function getJsonObjFromResult(&$result){
     // de & voor de parameter zorgt er voor dat we de de parameter

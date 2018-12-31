@@ -4,6 +4,7 @@ header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 require "Connection.php" ; 
+//require "Connection2.php" ; 
 // de vars ophalen die via POST meegestuurd zijn
 // $_POST werkt niet als de data via Volley gestuurd is :-(
 // Dit is nodig wanneer je native Android gebruikt.
@@ -157,7 +158,7 @@ if ($bewerking == "profielAdmin") {
         }
     
 }elseif($bewerking =="getKamers"){
-    if($result = $conn -> query("SELECT * FROM kamers ")){
+    if($result = $conn -> query("SELECT * FROM soort_kamer ")){
         
      
         // maak van de inhoud van deze result een json object waarvan
@@ -174,9 +175,10 @@ if ($bewerking == "profielAdmin") {
     }
     
 }elseif($bewerking =="getKamersInfo"){
-    if($result = $conn -> query("SELECT * FROM kamers where kamer_id = '".$id."'")){
+    if($result = $conn -> query("SELECT * FROM soort_kamer where soort_id  = '".$id."'")){
         
      
+
         // maak van de inhoud van deze result een json object waarvan
         // ook in android de juiste gegeventypes herkend worden
        $return = getJsonObjFromResult($result);
@@ -192,7 +194,7 @@ if ($bewerking == "profielAdmin") {
     
 }elseif ($bewerking == "updateKamerInfo") {
         if (isset($_POST['soort'])
-        && isset($_POST['personen']) && isset($_POST['prijs']) && isset($_POST['beschkbaar']) && isset($_POST['aantalBesch']) && isset($_POST['beschrij']) ) {
+        && isset($_POST['personen']) && isset($_POST['prijs']) &&  isset($_POST['beschrij']) ) {
             // hier MOET je controle plaatsen om o.a. SQL injection 
             // te voorkomen.
            // $_POST['Password'] = md5($_POST['Password']);
@@ -200,26 +202,222 @@ if ($bewerking == "profielAdmin") {
             $soort= $_POST['soort'];
             $personen = $_POST['personen'];
             $Prijs = $_POST['prijs'];
-            $beschikbaar = $_POST['beschkbaar'];
-            $aantal = $_POST['aantalBesch'];
             $beschrijving = $_POST['beschrij'];
            
           
         }
        
         // update data
-        if ($conn -> query("UPDATE kamers SET soort_kamer = '". $soort."'
-    ,personen = '".$personen."',prijs = '".$Prijs."',beschikbaarheid = '".$beschikbaar."',aantal = '".$aantal."',beschrijving = '".$beschrijving."' WHERE kamer_id = '".$id."'") === TRUE) { // FROM $t
+        if ($conn -> query("UPDATE soort_kamer SET soort_kamer = '". $soort."'
+    ,personen = '".$personen."',prijs = '".$Prijs."',beschrijving = '".$beschrijving."' WHERE soort_id = '".$id."'") === TRUE) { // FROM $t
             die(json_encode(1));
         } else {
              die(json_encode(2 . $conn -> error));
         }
         
         
-}
+}elseif($bewerking =="GetReservaties"){
+    
+      
+     
+      if($result = $conn -> query("SELECT klanten.klant_id, klanten.naam, klanten.voornaam, klanten.email , reservatie.reservatie_id,
+       reservatie.kamer_id, reservatie.aankomst_datum, reservatie.Vertrek_datum, reservatie.Statuut, reservatie.tebetalen, reservatie.betalingOk 
+      from klanten, reservatie WHERE klanten.klant_id = reservatie.klant_id and reservatie.Statuut = 'Booked'")){
+
+       
+            // maak van de inhoud van deze result een json object waarvan
+            // ook in android de juiste gegeventypes herkend worden
+            $return = getJsonObjFromResult($result);
+    
+            // maak geheugenresources vrij :
+           echo mysqli_free_result($result);
+           
+            die($return);
+
+    }else{
+        die(json_encode("missing data"));
+    }
+
+
+}elseif($bewerking =="Getcancelled"){
+    
+      
+     
+    if($result = $conn -> query("SELECT klanten.klant_id, klanten.naam, klanten.voornaam, klanten.email , reservatie.reservatie_id,
+     reservatie.kamer_id, reservatie.aankomst_datum, reservatie.Vertrek_datum, reservatie.Statuut, reservatie.tebetalen, reservatie.betalingOk 
+    from klanten, reservatie WHERE klanten.klant_id = reservatie.klant_id and reservatie.Statuut = 'Cancelled'")){
+
+     
+          // maak van de inhoud van deze result een json object waarvan
+          // ook in android de juiste gegeventypes herkend worden
+          $return = getJsonObjFromResult($result);
+  
+          // maak geheugenresources vrij :
+         echo mysqli_free_result($result);
+         
+          die($return);
+
+  }else{
+      die(json_encode("missing data"));
+  }
 
   
+}elseif($bewerking =="annuleerReservatie"){
+    if(isset($_POST['idAnnul']) && isset($_POST['kamerIdBesch'])){
+        $idt = $_POST['idAnnul'];
+        $KamerIdBes = $_POST['kamerIdBesch'];
+        $kamerBeschikbaarMaken = $conn -> query("UPDATE `kamers` SET `beschikbaar` = 'Ja' WHERE `kamers`.`kamers_id` = '".$KamerIdBes."' ");
+     if($result = $conn -> query("UPDATE `reservatie` SET `Statuut` = 'Cancelled' WHERE `reservatie`.`reservatie_id` = '".$idt."' " )) { // FROM $t
+        die(json_encode(1));
+    } else {
+         die(json_encode(2));
+    }
+    }else{
+        die(json_encode("missing data"));
+    }  
     
+
+}elseif($bewerking =="getreserSelect"){
+    if(isset($_POST['idReser'])){
+        $id = $_POST['idReser'];
+     
+      $result = $conn -> query("SELECT * FROM reservatie WHERE reservatie_id = '".$id."'");
+
+       
+            // maak van de inhoud van deze result een json object waarvan
+            // ook in android de juiste gegeventypes herkend worden
+            $return = getJsonObjFromResult($result);
+    
+            // maak geheugenresources vrij :
+           echo mysqli_free_result($result);
+           
+            die($return);
+
+    }else{
+        die(json_encode("missing data"));
+    }
+
+
+}elseif($bewerking =="checkedIn"){
+    if(isset($_POST['idRes'])){
+        $id = $_POST['idRes'];
+         
+    $result = $conn -> query("UPDATE `reservatie` SET 
+      `Statuut` = 'Checked' , `betalingOk` = 'Yes' WHERE 
+      `reservatie`.`reservatie_id` = '".$id."'");
+
+          die(json_encode(1));
+        } else {
+             die(json_encode(2). $conn -> error);
+        }
+
+}elseif($bewerking =="checkreservatie"){
+    
+      
+     
+    if($result = $conn -> query("SELECT klanten.klant_id, klanten.naam, klanten.voornaam, klanten.email , reservatie.reservatie_id,
+     reservatie.kamer_id, reservatie.aankomst_datum, reservatie.Vertrek_datum, reservatie.Statuut, reservatie.tebetalen, reservatie.betalingOk 
+    from klanten, reservatie WHERE klanten.klant_id = reservatie.klant_id 
+    and reservatie.Statuut = 'Checked'")){
+
+  
+
+     
+          // maak van de inhoud van deze result een json object waarvan
+          // ook in android de juiste gegeventypes herkend worden
+          $return = getJsonObjFromResult($result);
+  
+          // maak geheugenresources vrij :
+         echo mysqli_free_result($result);
+         
+          die($return);
+
+  }else{
+      die(json_encode(1));
+  }
+
+
+}elseif($bewerking =="checkOut"){
+    if(isset($_POST['idR'])&& isset($_POST['idRoom'])){
+        $id = $_POST['idR'];
+        $idRoom  =$_POST['idRoom'];
+        
+    $result = $conn -> query("UPDATE `reservatie` SET 
+      `Statuut` = 'Checked Out'  WHERE 
+      `reservatie`.`reservatie_id` = '".$id."'");
+      $result = $conn -> query("UPDATE `kamers` SET `beschikbaar` = 'Ja' WHERE `kamers`.`kamers_id` = '".$idRoom."' ");
+
+          die(json_encode(1));
+        } else {
+             die(json_encode(2). $conn -> error);
+        }
+
+}elseif($bewerking =="checkedOutreservaties"){
+    
+      
+     
+    if($result = $conn -> query("SELECT klanten.klant_id, klanten.naam, klanten.voornaam, klanten.email , reservatie.reservatie_id,
+     reservatie.kamer_id, reservatie.aankomst_datum, reservatie.Vertrek_datum, reservatie.Statuut, reservatie.tebetalen, reservatie.betalingOk 
+    from klanten, reservatie WHERE klanten.klant_id = reservatie.klant_id 
+    and reservatie.Statuut = 'Checked Out'")){
+
+     
+          // maak van de inhoud van deze result een json object waarvan
+          // ook in android de juiste gegeventypes herkend worden
+          $return = getJsonObjFromResult($result);
+  
+          // maak geheugenresources vrij :
+         echo mysqli_free_result($result);
+         
+          die($return);
+
+  }else{
+      die(json_encode(1));
+  }
+
+
+}elseif($bewerking =="getReservationId"){
+    if(isset($_POST['idCheckin'])){
+        $id = $_POST['idCheckin'];
+     
+      $result = $conn -> query("SELECT * FROM reservatie WHERE reservatie_id = '".$id."'");
+
+       
+            // maak van de inhoud van deze result een json object waarvan
+            // ook in android de juiste gegeventypes herkend worden
+            $return = getJsonObjFromResult($result);
+    
+            // maak geheugenresources vrij :
+           echo mysqli_free_result($result);
+           
+            die($return);
+
+    }else{
+        die(json_encode("missing data"));
+    }
+}
+/*
+elseif($bewerking =="getPrijs"){
+    if(isset($_POST['idres'])){
+        $id = $_POST['idres'];
+     
+      $result = $conn -> query("SELECT kamers.kamers_id, kamers.id_soort, kamers.beschikbaar,  reservatie.reservatie_id,reservatie.kamer_id, reservatie.aankomst_datum, reservatie.Vertrek_datum, reservatie.Statuut, reservatie.tebetalen, reservatie.betalingOk,soort_kamer.soort_id , soort_kamer.soort_kamer, soort_kamer.beschrijving,soort_kamer.personen, soort_kamer.prijs  FROM kamers,reservatie,soort_kamer WHERE kamers.kamers_id = reservatie.kamer_id and kamers.id_soort = soort_kamer.soort_id and reservatie.reservatie_id = '".$id."' ");
+
+       
+            // maak van de inhoud van deze result een json object waarvan
+            // ook in android de juiste gegeventypes herkend worden
+            $return = getJsonObjFromResult($result);
+    
+            // maak geheugenresources vrij :
+           echo mysqli_free_result($result);
+           
+            die($return);
+
+    }else{
+        die(json_encode("missing data"));
+    }
+}*/
+
     
     
 function getJsonObjFromResult(&$result){

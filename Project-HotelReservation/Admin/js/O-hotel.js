@@ -9,20 +9,81 @@ var app = new Framework7({
     name: 'Framework7', // App name
     theme: 'auto', // Automatic theme detection
 });
+
 var link = 'https://o-hotel.000webhostapp.com/Admin/php/get_gegevens_Admin.php';
 var IDProfiel;
+var Email = sessionStorage.getItem("Email");
 var idInfo = 0;
+window.onload = getIdAdmin, app.view.current.router.navigate('/reservation/'),getReservation();
 
-//$(document).ready(function () {
-//
-//        
-//         }
-//    });
+$$(document).on('click','a', function () {
+    //define link
+    var link = $$(this);
+
+    //put link in timetout context, we need wait 1400 ms until animation finish then we can start animation to hide ripple effect
+    setTimeout(function (link_a) {
+        return function () {
+            //we find all ripples -> for each of them we start hide animation -> then we need to wait another 1400 ms until finish application
+            link_a.find(".ripple-wave").each(function (index, ripple) {
+                $$(ripple).css('opacity', 0);
+
+                setTimeout(function (ripple) {
+                    return function () {
+                        $$(ripple).remove();
+                    }
+                }(ripple), 500);
+
+            })
+        }
+}(link), 500);   });
+
+
+function backFunction(){
+  
+   
+    setTimeout(function () {
+        app.view.current.router.navigate('/reservation/');
+        getReservation();
+
+    }, 100);
+ 
+ }
+
+function getIdAdmin() {
+    if (Email == null) {
+        app.dialog.alert("Please log in ", "Error", function () {
+            window.location.href = "../index.html";
+        });
+    } else {
+
+
+
+        var data = {};
+        data.bewerking = "profielAdmin";
+        data.Email = Email;
+        app.request.post(link, data, function (data) {
+            var list = JSON.parse(data).data;
+            IDProfiel = list[0].klant_id;
+          getReservation();
+
+        });
+    }
+}
+// het deactiveren van focus op tab id's
+
 
 // het deactiveren van focus op tab id's
 
-$$('#kamertab').click(function () {
+$$('#checkedtab').click(function () {
+    $$('#kamertab').removeClass('tab-link tab-link-active').addClass('tab-link');
+    $$('#reservationtab').removeClass('tab-link tab-link-active').addClass('tab-link');
+    $$('#accounttab').removeClass('tab-link tab-link-active').addClass('tab-link');
+    $$('#logout').removeClass('tab-link tab-link-active').addClass('tab-link');
+    $$(this).removeClass('tab-link').addClass('tab-link tab-link-active');
 
+
+});$$('#kamertab').click(function () {
+    $$('#checkedtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#reservationtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#accounttab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#logout').removeClass('tab-link tab-link-active').addClass('tab-link');
@@ -31,7 +92,7 @@ $$('#kamertab').click(function () {
 
 });
 $$('#reservationtab').click(function () {
-
+    $$('#checkedtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#kamertab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#accounttab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#logout').removeClass('tab-link tab-link-active').addClass('tab-link');
@@ -40,7 +101,7 @@ $$('#reservationtab').click(function () {
 
 });
 $$('#accounttab').click(function () {
-
+    $$('#checkedtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#reservationtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#kamertab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#logout').removeClass('tab-link tab-link-active').addClass('tab-link');
@@ -49,7 +110,7 @@ $$('#accounttab').click(function () {
 
 });
 $$('#logout').click(function () {
-
+    $$('#checkedtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#reservationtab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#kamertab').removeClass('tab-link tab-link-active').addClass('tab-link');
     $$('#accounttab').removeClass('tab-link tab-link-active').addClass('tab-link');
@@ -58,8 +119,529 @@ $$('#logout').click(function () {
 
 });
 
-function getKamers() {
+
+function getReservation(){
+  
+if(IDProfiel == null){
+    getIdAdmin();
+}
+else {
+
+
+    var data = {};
+    data.bewerking = "GetReservaties";
+    
    
+    app.preloader.show();
+    app.request.post(link, data, function (data, responseText, status) {
+        //console.log(data);
+       
+        var control = data;
+
+        if (control == 1) {
+            app.preloader.hide();
+
+            app.dialog.alert('No admin id ', 'Error');
+            location.reload();
+        }else if(control == 2){
+            app.preloader.hide();
+            app.dialog.alert('No reservations available', 'Empty');
+        }
+
+
+
+        app.preloader.hide();
+        var list = (JSON.parse(status.responseText)).data;
+        var i;
+        
+     
+        $$(".reservatieUithalen").empty();
+        for (i = 0; i < list.length; i++) {
+          
+ 
+            $$(".geenReser").empty();
+
+            $$(".reservatieUithalen").append(`
+                <div class="card data-table data-table-collapsible data-table-init">
+                    <f7-card>
+ <div class="card-header">
+                        <div class="data-table-title"> ${list[i].email}</div>
+       
+                
+</div>
+                 
+   
+               <p > <img src="Images/${list[i].kamer_id}.jpg" style="width: 100%;height:auto;">  </p>
+
+
+                        <f7-card-content>
+                        <h4 style="padding-left: 10px;" >Booking details</h4>
+                            <p class="date"></p>
+                            <p style="padding-left: 10px;">Last name :  ${list[i].naam }</p>
+                            <p style="padding-left: 10px;">First name:  ${list[i].voornaam }</p>
+                            <p style="padding-left: 10px;">Check-in :  ${list[i].aankomst_datum }</p>
+                            <p style="padding-left: 10px;">Check-out :  ${list[i].Vertrek_datum }</p>
+                            <p style="padding-left: 10px;">Status :  ${list[i].Statuut}</p>
+                            <p style="padding-left: 10px;">Payed :  ${list[i].betalingOk}</p>
+                 <h4 style="text-align:center; color:red;" >To pay: ${ list[i].tebetalen } €</h4>
+                        </f7-card-content>
+                        <f7-card-footer>
+                        <div>
+                        <Button id="btnAnnuleer"  Class="btnAnnuleer" onclick="check( ${ list[i].reservatie_id})">Check-in</Button>
+                   </div><br>
+                   <div>
+                        <Button id="btnAnnuleer"  Class="btnAnnuleer" onclick="AnnuleerReservation( ${ list[i].reservatie_id}, ${ list[i].kamer_id})">Cancel</Button><br>
+                       </div>
+                      </f7-card-footer>
+                </f7-card>
+                 
+</div><br>
+`);
+
+        }
+      
+    }, function (error, status) {
+
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+
+    });
+
+    
+    var data = {};
+    data.bewerking = "Getcancelled";
+    
+   
+    app.preloader.show();
+    app.request.post(link, data, function (data, responseText, status) {
+        //console.log(data);
+       
+        var control = data;
+
+        if (control == 1) {
+            app.preloader.hide();
+
+            app.dialog.alert('No admin id ', 'Error');
+            location.reload();
+        }else if(control == 2){
+            app.preloader.hide();
+            app.dialog.alert('No cancelled reservations available', 'Empty');
+        }
+        app.preloader.hide();
+        var list = (JSON.parse(status.responseText)).data;
+        var i;
+        $$(".CancelledReservations").empty();
+    
+        for (i = 0; i < list.length; i++) {
+            $$(".CancelledText").empty();
+            $$(".CancelledReservations").append(`
+                <div class="card data-table data-table-collapsible data-table-init">
+                    <f7-card>
+ <div class="card-header">
+                        <div class="data-table-title"> ${list[i].email}</div>
+       
+                
+</div>
+                 
+   
+               <p > <img src="Images/${list[i].kamer_id}.jpg" style="width: 100%;height:auto;">  </p>
+
+
+                        <f7-card-content>
+                        <h4 style="padding-left: 10px;" >Booking details</h4>
+                            <p class="date"></p>
+                            <p style="padding-left: 10px;">Last name :  ${list[i].naam }</p>
+                            <p style="padding-left: 10px;">First name:  ${list[i].voornaam }</p>
+                            <p style="padding-left: 10px;">Check-in :  ${list[i].aankomst_datum }</p>
+                            <p style="padding-left: 10px;">Check-out :  ${list[i].Vertrek_datum }</p>
+                            <p style="padding-left: 10px;">To pay: ${ list[i].tebetalen } €</p>
+                            <p style="padding-left: 10px;">Payed :  ${list[i].betalingOk}</p>
+                 <h4 style="text-align:center; color:red;" >Status :  ${list[i].Statuut}</h4>
+                        </f7-card-content>
+                        <f7-card-footer>
+                       
+                       
+                       
+                      </f7-card-footer>
+                </f7-card>
+                 
+</div><br>
+`);
+
+        }
+      
+    }, function (error, status) {
+
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+
+    });
+
+}   
+}
+
+function check(idreservation){
+  
+    var data = {};
+   data.bewerking = "getReservationId";
+   data.idCheckin = idreservation;
+   console.log(data);
+   app.request.post(link, data, function (data, responseText, status) {
+       console.log(data);
+    var list = (JSON.parse(status.responseText)).data;
+    
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + "0"+dd;
+    console.log(today);
+
+    if(list[0].aankomst_datum  != today){
+        app.dialog.alert('Too early to check-in', 'Error');
+  
+}else{
+    app.dialog.confirm('Is the payment done?', 'Payment control', function () {
+        var data = {};
+        data.bewerking = "checkedIn";
+        data.idRes = idreservation;
+        app.request.post(link, data, function (data, responseText, status) {
+        console.log(data);
+        var control =  data;
+        if(control == 1){
+           app.dialog.confirm('Checked-in', 'Success', function() {
+            location.reload();
+           });
+        }else if(control == 2){
+           app.dialog.alert('Error checking in', 'Error');
+        }
+    
+    }, function (error, status) {
+    
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+    
+    });
+       });
+}
+}, function (error, status) {
+
+    if (status === 0) {
+        app.dialog.alert('No internet connection', "Error");
+    } else {
+        app.dialog.alert('The server is not available right now.', "Error");
+    }
+
+});
+}
+
+function checkedInReservatie(){
+    
+var data = {};
+data.bewerking = "checkreservatie";
+app.preloader.show();
+    app.request.post(link, data, function (data, responseText, status) {
+        //console.log(data);
+       
+        var control = data;
+
+        if (control == 1) {
+            app.preloader.hide();
+
+            app.dialog.alert('Missing data', 'Error');
+            location.reload();
+        }
+
+
+
+        app.preloader.hide();
+        var list = (JSON.parse(status.responseText)).data;
+        var i;
+  
+        $$(".CheckedIn").empty();
+        for (i = 0; i < list.length; i++) {
+            $$(".checkecInText").empty();
+            $$(".CheckedIn").append(`
+                <div class="card data-table data-table-collapsible data-table-init">
+                    <f7-card>
+ <div class="card-header">
+                        <div class="data-table-title"> ${list[i].email}</div>
+       
+                
+</div>
+                 
+   
+               <p > <img src="Images/${list[i].kamer_id}.jpg" style="width: 100%;height:auto;">  </p>
+
+
+                        <f7-card-content>
+                        <h4 style="padding-left: 10px;" >Booking details</h4>
+                            <p class="date"></p>
+                            <p style="padding-left: 10px;">Last name :  ${list[i].naam }</p>
+                            <p style="padding-left: 10px;">First name:  ${list[i].voornaam }</p>
+                            <p style="padding-left: 10px;">Check-in :  ${list[i].aankomst_datum }</p>
+                            <p style="padding-left: 10px;">Check-out :  ${list[i].Vertrek_datum }</p>
+                            <p style="padding-left: 10px;">Status :  ${list[i].Statuut}</p>
+                            <p style="padding-left: 10px;">To pay: ${ list[i].tebetalen } €</p>
+                 <h4 style="text-align:center; color:red;" >Payed :  ${list[i].betalingOk}</h4>
+                        </f7-card-content>
+                        <f7-card-footer>
+                        <div>
+                        <Button id="btnAnnuleer"  Class="btnAnnuleer" onclick="checkOut(${ list[i].reservatie_id},${list[i].kamer_id } )">Check-out</Button>
+                   </div><br>
+                   
+                      </f7-card-footer>
+                </f7-card>
+                 
+</div><br>
+`);
+
+        }
+      
+    }, function (error, status) {
+
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+
+    });
+   
+    var data = {};
+data.bewerking = "checkedOutreservaties";
+app.preloader.show();
+    app.request.post(link, data, function (data, responseText, status) {
+      //  console.log(data);
+       
+        var control = data;
+
+        if (control == 1) {
+            app.preloader.hide();
+
+            app.dialog.alert('Missing data', 'Error');
+            location.reload();
+        }
+        app.preloader.hide();
+        var list = (JSON.parse(status.responseText)).data;
+        var i;
+       
+        $$(".CheckedOut").empty();
+        for (i = 0; i < list.length; i++) {
+            $$(".checkedtext").empty();
+            $$(".CheckedOut").append(`
+                <div class="card data-table data-table-collapsible data-table-init">
+                    <f7-card>
+ <div class="card-header">
+                        <div class="data-table-title"> ${list[i].email}</div>
+       
+                
+</div>
+                 
+   
+               <p > <img src="Images/${list[i].kamer_id}.jpg" style="width: 100%;height:auto;">  </p>
+
+
+                        <f7-card-content>
+                        <h4 style="padding-left: 10px;" >Booking details</h4>
+                            <p class="date"></p>
+                            <p style="padding-left: 10px;">Last name :  ${list[i].naam }</p>
+                            <p style="padding-left: 10px;">First name :  ${list[i].voornaam }</p>
+                            <p style="padding-left: 10px;">Check-n :  ${list[i].aankomst_datum }</p>
+                            <p style="padding-left: 10px;">Check-out :  ${list[i].Vertrek_datum }</p>
+                            <p style="padding-left: 10px;">Payed :  ${list[i].betalingOk}</p>
+                            <p style="padding-left: 10px;">To pay: ${ list[i].tebetalen } €</p>
+                 <h4 style="text-align:center; color:red;" >Status :  ${list[i].Statuut}</h4>
+                        </f7-card-content>
+                        <f7-card-footer>
+                        
+                      </f7-card-footer>
+                </f7-card>
+                 
+</div><br>
+`);
+
+        }
+      
+    }, function (error, status) {
+
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+
+    });
+}
+function checkOut(idreser, roomId){
+    var data = {};
+    data.bewerking = "getReservationId";
+    data.idCheckin = idreser;
+    console.log(data);
+    app.request.post(link, data, function (data, responseText, status) {
+        console.log(data);
+        var list = (JSON.parse(status.responseText)).data;
+
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + "0"+dd;
+        //console.log(verschil);
+        if(list[0].Vertrek_datum  != today){
+            app.dialog.confirm('Extra costs to pay', 'Error', function(){
+                app.dialog.confirm('Payed the extra costs? ', 'Control', function(){
+                var data = {};
+                data.bewerking = "checkOut";
+                data.idR = idreser;
+                data.idRoom = roomId;
+                app.preloader.show();
+                app.request.post(link, data, function (data, responseText, status) {
+                  //  console.log(data);
+                   
+                    var control = data;
+            
+                    if (control == 1) {
+                        app.preloader.hide();
+            
+                        app.dialog.alert('Missing data', 'Error');
+                        location.reload();
+                    }
+            
+                }, function (error, status) {
+            
+                    if (status === 0) {
+                        app.dialog.alert('No internet connection', "Error");
+                    } else {
+                        app.dialog.alert('The server is not available right now.', "Error");
+                    }
+            
+                });
+            }); });
+      
+    }else{
+     app.dialog.confirm('Are u sure you want to check-out?', 'Control', function () {
+    var data = {};
+    data.bewerking = "checkOut";
+    data.idR = idreser;
+    data.idRoom = roomId;
+    app.preloader.show();
+    app.request.post(link, data, function (data, responseText, status) {
+      //  console.log(data);
+       
+        var control = data;
+
+        if (control == 1) {
+            app.preloader.hide();
+
+            app.dialog.alert('Missing data', 'Error');
+            location.reload();
+        }else{
+            setTimeout(function () {
+                app.view.current.router.navigate('/checked/');
+                checkedInReservatie();
+        
+            }, 1000);  
+        }
+
+    }, function (error, status) {
+
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+
+    });
+
+     });
+    }
+});
+}
+function AnnuleerReservation(reservationId ,  kamerId){
+
+   
+    var data = {};
+    data.idReser = reservationId;
+    data.bewerking = "getreserSelect";
+    app.request.post(link, data, function (data, responseText, status) {
+       // console.log(data);
+        var list = (JSON.parse(status.responseText)).data;
+        var dateIn = new Date(list[0].aankomst_datum);
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + "0"+dd;
+
+        console.log(today);
+        var test =  new Date();
+        var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+        var verschil = Math.round(Math.abs((test.getTime() - dateIn.getTime()) / (oneDay)));
+        console.log(verschil);
+        if(verschil < 1){
+            app.dialog.alert('No longer allowed to cancel ', "Error");
+         
+        }else{
+            app.dialog.confirm('Are you sure you want to cancel the reservation?', 'Cancellation Control', function () {
+                var dataChange = {};
+                dataChange.idAnnul = reservationId;
+                dataChange.kamerIdBesch = kamerId;
+                dataChange.bewerking = "annuleerReservatie";
+                app.request.post(link, dataChange, function (dataChange, responseText, status) { 
+                    console.log(dataChange);
+                    var control = dataChange;
+                    if (control = 1){
+                        app.dialog.confirm("Your booking is cancelled", "Cancelled", function () { 
+                            location.reload();
+                        });
+
+                    }else if(control = 2)
+                    {
+                        app.dialog.alert("Try again later", "Cancellation Problem");
+                    }
+                }, function (error, status) {
+
+                    if (status === 0) {
+                        app.dialog.alert('No internet connection', "Error");
+                    } else {
+                        app.dialog.alert('The server is not available right now.', "Error");
+                    }
+            
+                });
+
+
+              
+            });
+        }
+    }, function (error, status) {
+
+        if (status === 0) {
+            app.dialog.alert('No internet connection', "Error");
+        } else {
+            app.dialog.alert('The server is not available right now.', "Error");
+        }
+
+    });
+
+
+
+}
+
+function getKamers() {
+    $$("div.getKamers").empty()
     var data = {};
     data.bewerking = "getKamers";
     app.request.post(link, data, function (data, responseText, status) {
@@ -70,7 +652,7 @@ function getKamers() {
             var i;
             for (i = 0; i < list.length; i++) {
 
-                $$("#getKamer").append(`
+                $$(".getKamers").append(`
   <div class="card data-table data-table-collapsible data-table-init">
                     <f7-card>
  <div class="card-header">
@@ -79,19 +661,19 @@ function getKamers() {
 </div>
                  
    
-               <p > <img src="Images/foto${list[i].kamer_id}.jpg" style="width: 100%;height:auto;">  </p>
+               <p > <img src="Images/foto${list[i].soort_id}.jpg" style="width: 100%;height:auto;">  </p>
 
 
                         <f7-card-content>
                         <h4 style="padding-left: 10px;" >Informatie</h4>
                             <p class="date"></p>
                             <p style="padding-left: 10px;">${list[i].beschrijving}</p>
-                    <h4 style="padding-left: 10px;" >Prijs: ${list[i].prijs} € </h4>
+                    <h4 style="padding-left: 10px;" >Price: ${list[i].prijs} € </h4>
                 
                         </f7-card-content>
                         <f7-card-footer>
                        
-                        <Button id="btnKamer"  data-popup="#MyPopupKamer" Class="btnKamer popup-open" onclick="BewerkInfo(${list[i].kamer_id});">Kamer Info Bewerken</Button><br>
+                        <Button id="btnKamer"  data-popup="#MyPopupKamer" Class="btnKamer popup-open" onclick="BewerkInfo(${list[i].soort_id});">Edit room information</Button><br>
                       </f7-card-footer>
                 </f7-card>
                  
@@ -103,15 +685,16 @@ function getKamers() {
             var control = data;
 
             if (control == 1) {
-                app.dialog.alert('Geen records beschikbaar', 'Foutmelding');
+                app.dialog.alert('No records available', 'Error');
+                
             }
 
         }, function (error, status) {
 
             if (status === 0) {
-                app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                app.dialog.alert('No internet connection', "Error");
             } else {
-                app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                app.dialog.alert('The server is not available right now.', "Error");
             }
         }
 
@@ -121,6 +704,8 @@ function getKamers() {
 }
 
 function BewerkInfo(intValue) {
+    $$("div#popupKamer.content-block-inner").empty()
+
     idInfo = intValue;
     var data = {};
     data.id = idInfo;
@@ -137,7 +722,7 @@ function BewerkInfo(intValue) {
   <ul>
     <li class="item-content item-input">
       <div class="item-inner">
-        <div class="item-title item-label">Kamer Naam</div>
+        <div class="item-title item-label">Room type</div>
         <div class="item-input-wrap">
           <input id="soort_kamer"type="text" placeholder="${list[i].soort_kamer}" value="${list[i].soort_kamer}">
           <span class="input-clear-button"></span>
@@ -146,7 +731,7 @@ function BewerkInfo(intValue) {
     </li>
 <li class="item-content item-input">
       <div class="item-inner">
-        <div class="item-title item-label">Personen</div>
+        <div class="item-title item-label">People</div>
         <div class="item-input-wrap">
           <input id="personen" type="text" placeholder="${list[i].personen}" value="${list[i].personen}">
           <span class="input-clear-button"></span>
@@ -154,36 +739,20 @@ function BewerkInfo(intValue) {
       </div>
     </li>
 
-    <li class="item-content item-input">
-      <div class="item-inner">
-        <div class="item-title item-label">Beschikbaarheid</div>
-        <div class="item-input-wrap">
-          <input id="beschikbaarheid" type="text" placeholder="${list[i].beschikbaarheid}" value="${list[i].beschikbaarheid}">
-          <span class="input-clear-button"></span>
-        </div>
-      </div>
-    </li>
+
         <li class="item-content item-input">
       <div class="item-inner">
-        <div class="item-title item-label">Prijs</div>
+        <div class="item-title item-label">Price</div>
         <div class="item-input-wrap">
           <input id="prijs" type="text" placeholder="${list[i].prijs}" value="${list[i].prijs}">
           <span class="input-clear-button"></span>
         </div>
       </div>
     </li>
+
  <li class="item-content item-input">
       <div class="item-inner">
-        <div class="item-title item-label">Aantal kamers</div>
-        <div class="item-input-wrap">
-          <input id="aantal" type="text" placeholder="${list[i].aantal}" value="${list[i].aantal}">
-          <span class="input-clear-button"></span>
-        </div>
-      </div>
-    </li>
- <li class="item-content item-input">
-      <div class="item-inner">
-        <div class="item-title item-label">Beschrijving</div>
+        <div class="item-title item-label">Description</div>
         <div class="item-input-wrap">
         <textarea id="beschrijving" rows="20" cols="100">${list[i].beschrijving}
         </textarea>
@@ -193,7 +762,7 @@ function BewerkInfo(intValue) {
       </div>
     </li>
   </ul>
- <Button id="btnBewerkKamer" @click="$f7router.navigate('/kamers/')"  Class="btnBewerkKamer popup-close" onclick="updateInfoKamer(${list[i].kamer_id});">Bewerken</Button><br>
+ <Button id="btnBewerkKamer"   Class="btnBewerkKamer popup-close" onclick="updateInfoKamer(${list[i].soort_id});">Edit</Button><br>
 </div>
 
 `);
@@ -204,19 +773,17 @@ function BewerkInfo(intValue) {
 }
 
 function updateInfoKamer(intValue) {
-app.dialog.confirm('Bent u zeker ?', 'Update Kamer controle', function () {
+app.dialog.confirm('Are you sure you want to update the room information', 'Update Control', function () {
        
    
- idInfo = intValue;
+    idInfo = intValue;
     var soort = $$('#soort_kamer').val();
     var personen = $$('#personen').val();
     var prijs = $$('#prijs').val();
-    var beschkbaar = $$('#beschikbaarheid').val();
-    var aantalBesch = $$('#aantal').val();
-    var beschrij = $$('#beschrijving').val();
-    if (!soort || !personen || !prijs || !beschkbaar || !aantalBesch || !beschrij ) {
+      var beschrij = $$('#beschrijving').val();
+    if (!soort || !personen || !prijs || !beschrij ) {
 
-            app.dialog.alert('Gelieve alle tekstvelden in te vullen', 'Lege tekstvelden');
+            app.dialog.alert('Please fill in all the fields', 'Missing fields');
             return;
         } else {
             app.dialog.close();
@@ -226,8 +793,6 @@ app.dialog.confirm('Bent u zeker ?', 'Update Kamer controle', function () {
             data.soort = soort;
             data.personen = personen;
             data.prijs = prijs;
-            data.beschkbaar = beschkbaar;
-            data.aantalBesch = aantalBesch;
             data.beschrij = beschrij;
                     app.request.post(link, data, function (data) {
 
@@ -236,27 +801,28 @@ app.dialog.confirm('Bent u zeker ?', 'Update Kamer controle', function () {
                     if (control == 1) {
                      
                         
-                        app.dialog.alert('Update is met success gelukt', 'Update van Kamer', function () {
+                        app.dialog.alert('Update was successfully executed', 'Room update', function () {
                           app.preloader.hide();
-                            this.$f7router.navigate('/kamers/');
+                          app.view.current.router.navigate('/kamers/');  
+                   
+                           
                             
                         });
 
                     } else if (control == 2) {
-                        app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens');
+                        app.dialog.alert('An error has occurred. Please try again later.');
                         app.preloader.hide();
+                        
                     }
 
-                    //mainView.router.loadPage('profiel.html');
+                
 
                 }, function (error, status) {
 
                     if (status === 0) {
-                        app.dialog.alert('Geen internetverbinding', "Foutmelding");
-                        app.preloader.hide();
+                        app.dialog.alert('No internet connection', "Error");
                     } else {
-                        app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
-                        app.preloader.hide();
+                        app.dialog.alert('The server is not available right now.', "Error");
                     }
 
                 }
@@ -273,31 +839,34 @@ app.dialog.confirm('Bent u zeker ?', 'Update Kamer controle', function () {
 
 function getProfile() {
     app.preloader.show();
-    var cookies = [];
-    if (document.cookie != "") {
+   // var getData = [];
+   /**  if("data" in localStorage){
+
         app.preloader.hide();
-        // cookies = JSON.parse(document.cookie);
-        //console.log(document.cookie);
-        var data = document.cookie
-        cookies = JSON.parse(data);
-        console.log(cookies.data);
-        document.getElementById("Admin_id").value = cookies.data[0].klant_id;
-        document.getElementById("Ad_Voornaam").value = cookies.data[0].voornaam;
-        document.getElementById("Ad_Naam").value = cookies.data[0].naam;
-        document.getElementById("Ad_Straat").value = cookies.data[0].adres;
-        document.getElementById("Ad_Gemeente").value = cookies.data[0].gemeente;
-        document.getElementById("Ad_Postcode").value = cookies.data[0].postcode;
-        document.getElementById("Ad_Geboortedatum").value = cookies.data[0].geboortedatum;
-        document.getElementById("Ad_Geslacht").value = cookies.data[0].geslacht;
-        document.getElementById("Ad_Phone").value = cookies.data[0].telefoonnummer;
-        document.getElementById("Ad_Email").value = cookies.data[0].email;
-        document.getElementById("Ad_Password").value = cookies.data[0].password;
-        IDProfiel = cookies.data[0].klant_id;
+      
+        var dataStored = localStorage.getItem("data");
+        getData = JSON.parse(dataStored);
+        console.log(localStorage.getItem("data"));
+        $$("input#Admin_id")[1].value = getData.data[0].klant_id;
+     
+         //$$('#Admin_id.input-with-value').val(getData.data[0].klant_id);
+       // $$("#Admin_id").text() = getData.data[0].klant_id; 
+        //$$("#Admin_id.input-with-value").val(getData.data[0].klant_id); 
+       document.getElementById("Ad_Voornaam").value = getData.data[0].voornaam;
+        document.getElementById("Ad_Naam").value = getData.data[0].naam;
+        document.getElementById("Ad_Straat").value = getData.data[0].adres;
+        document.getElementById("Ad_Gemeente").value = getData.data[0].gemeente;
+        document.getElementById("Ad_Postcode").value = getData.data[0].postcode;
+        document.getElementById("Ad_Geboortedatum").value = getData.data[0].geboortedatum;
+        document.getElementById("Ad_Geslacht").value = getData.data[0].geslacht;
+        document.getElementById("Ad_Phone").value = getData.data[0].telefoonnummer;
+        document.getElementById("Ad_Email").value = getData.data[0].email;
+        document.getElementById("Ad_Password").value = getData.data[0].password;
+        IDProfiel = getData.data[0].klant_id;
+    
 
 
-
-
-    } else {
+    } else {*/
         var data = {};
         data.bewerking = "profielAdmin";
         data.Email = sessionStorage.getItem("Email");
@@ -306,55 +875,60 @@ function getProfile() {
                 //console.log(status.responseText);
                 app.preloader.hide();
                 var list = (JSON.parse(status.responseText)).data;
-                console.log(status);
-                document.getElementById("Admin_id").value = list[0].klant_id;
-                document.getElementById("Ad_Voornaam").value = list[0].voornaam;
-                document.getElementById("Ad_Naam").value = list[0].naam;
-                document.getElementById("Ad_Straat").value = list[0].adres;
-                document.getElementById("Ad_Gemeente").value = list[0].gemeente;
-                document.getElementById("Ad_Postcode").value = list[0].postcode;
-                document.getElementById("Ad_Geboortedatum").value = list[0].geboortedatum;
-                document.getElementById("Ad_Geslacht").value = list[0].geslacht;
-                document.getElementById("Ad_Phone").value = list[0].telefoonnummer;
-                document.getElementById("Ad_Email").value = list[0].email;
-                document.getElementById("Ad_Password").value = list[0].password;
+                //console.log(status);
+                //$$("input#Admin_id")[1].value = list[0].klant_id;
+               
+                $$("input#Admin_id")[1].value = list[0].klant_id;
+                $$("input#Ad_Voornaam")[1].value = list[0].voornaam;
+                $$("input#Ad_Naam")[1].value = list[0].naam;
+                $$("input#Ad_Straat")[1].value = list[0].adres;
+                $$("input#Ad_Gemeente")[1].value = list[0].gemeente;
+                $$("input#Ad_Postcode")[1].value = list[0].postcode;
+                $$("input#Ad_Geboortedatum")[1].value = list[0].geboortedatum;
+                $$("select#Ad_Geslacht")[1].value = list[0].geslacht;
+                $$("input#Ad_Phone")[1].value = list[0].telefoonnummer;
+                $$("input#Ad_Email")[1].value = list[0].email;
+                $$("input#Ad_Password")[1].value = list[0].password;
+             
+               
+            
+                
                 IDProfiel = list[0].klant_id;
                 //console.log(IDProfiel);
-                var myObject = JSON.parse(status.responseText);
-                document.cookie = JSON.stringify(myObject);
+               /**  var myObject = JSON.parse(status.responseText);
+               
 
-
+                localStorage.setItem("data", JSON.stringify(myObject));*/
 
             }, function (error, status) {
 
                 if (status === 0) {
-                    app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                    app.dialog.alert('No internet connection', "Error");
                 } else {
-                    app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                    app.dialog.alert('The server is not available right now.', "Error");
                 }
-
             }
 
         );
-    }
+    //}
 }
 
 function AccountBewerken() {
-    app.dialog.confirm('Wil u uw account berwerken?', 'Bewerking controle', function () {
-        var email = $$('#Ad_Email').val();
-        var password = $$('#Ad_Password').val();
-        var voornaam = $$('#Ad_Voornaam').val();
-        var naam = $$('#Ad_Naam').val();
-        var straat = $$('#Ad_Straat').val();
-        var gemeente = $$('#Ad_Gemeente').val();
-        var postcode = $$('#Ad_Postcode').val();
-        var geboortedatum = $$('#Ad_Geboortedatum').val();
-        var geslacht = $$('#Ad_Geslacht').val();
-        var phone = $$('#Ad_Phone').val();
+    app.dialog.confirm('Are you sure you want to edit your account', 'Control', function () {
+        var email =   $$("input#Ad_Email")[1].value;
+        var password = $$("input#Ad_Password")[1].value;
+        var voornaam = $$("input#Ad_Voornaam")[1].value ;
+        var naam =  $$("input#Ad_Naam")[1].value;
+        var straat =  $$("input#Ad_Straat")[1].value ;
+        var gemeente =  $$("input#Ad_Gemeente")[1].value ;
+        var postcode =  $$("input#Ad_Postcode")[1].value;
+        var geboortedatum =  $$("input#Ad_Geboortedatum")[1].value;
+        var geslacht = $$("select#Ad_Geslacht")[1].value;
+        var phone = $$("input#Ad_Phone")[1].value; 
 
         if (!email || !password || !voornaam || !naam || !phone || !straat || !gemeente || !postcode || !geboortedatum || !geslacht) {
 
-            app.dialog.alert('Gelieve alle tekstvelden in te vullen', 'Lege tekstvelden');
+            app.dialog.alert('Please fill in all the fields', 'Missing fields');
             return;
         } else {
             var data = {};
@@ -378,14 +952,14 @@ function AccountBewerken() {
                     var control = data;
                     if (control == 1) {
                         app.preloader.show();
-                        document.cookie = "";
-                        app.dialog.alert('Update is met success gelukt', 'Update van uw profiel', function () {
+                      localStorage.removeItem("data"); 
+                        app.dialog.alert('Profile has been updated successfully.', 'Success', function () {
                             location.reload();
                             //window.location.href = "Gebruiker/index.html";
                         });
 
                     } else if (control == 2) {
-                        app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens');
+                        app.dialog.alert('An error has occurred. Please try again later.');
                     }
 
                     //mainView.router.loadPage('profiel.html');
@@ -393,9 +967,9 @@ function AccountBewerken() {
                 }, function (error, status) {
 
                     if (status === 0) {
-                        app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                        app.dialog.alert('No internet connection', "Error");
                     } else {
-                        app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                        app.dialog.alert('The server is not available right now.', "Error");
                     }
 
                 }
@@ -406,24 +980,18 @@ function AccountBewerken() {
 }
 //verwijderen van account
 function AccountVerwijderen() {
-    app.dialog.confirm('Bent u zeker  account te verwijderen?', 'Verwijdering controle', function () {
+    app.dialog.confirm('Are you sure you want to delete your account?', 'Confirmation', function () {
         sendAjax(IDProfiel);
     });
 }
 
 // afmelden
 function afmelden() {
-    if (document.cookie != "") {
-        document.cookie = "";
-        //console.log(document.cookie);
+    
         sessionStorage.setItem("Email", "");
         app.preloader.show();
         window.location.href = "../index.html";
-    } else {
-        sessionStorage.setItem("Email", "");
-        app.preloader.show();
-        window.location.href = "../index.html";
-    }
+    
 }
 
 function sendAjax(id) {
@@ -440,14 +1008,15 @@ function sendAjax(id) {
             app.preloader.show();
             var control = data;
             if (control == 1) {
+                 localStorage.removeItem("data"); 
                 app.preloader.hide();
-                app.dialog.alert('Uw Account is met succes verwijderd. U wordt terug gestuurd naar Homepagina.', 'Verwijderen van uw profiel');
+                app.dialog.alert('Your account has been deleted successfully. You will now be sent to the index page.', 'Success');
                 sessionStorage.setItem("Email", "");
                 setTimeout(function () {
                     location.replace("../index.html");
                 }, 2000);
             } else if (control == 2) {
-                app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens');
+                app.dialog.alert('An error has occurred. Please try again later.');
             }
 
             //mainView.router.loadPage('profiel.html');
@@ -455,9 +1024,9 @@ function sendAjax(id) {
         }, function (error, status) {
 
             if (status === 0) {
-                app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                app.dialog.alert('No internet connection', "Error");
             } else {
-                app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                app.dialog.alert('The server is not available right now.', "Error");
             }
 
         }
@@ -465,6 +1034,17 @@ function sendAjax(id) {
     );
 
 }
+// create searchbar
+var searchbar = app.searchbar.create({
+  el: '.searchbar',
+  searchContainer: '.card-content',
+  searchIn: '.label-cell',
+  on: {
+    search(sb, query, previousQuery) {
+      console.log(query, previousQuery);
+    }
+  }
+});
 //Klanten uithalen
 function GetKlanten() {
 
@@ -479,8 +1059,10 @@ function GetKlanten() {
             var i;
             for (i = 0; i < list.length; i++) {
 
-                $$("#klanten").append(`
-                    <div class="card data-table data-table-collapsible data-table-init">
+                $$(".klanten").append(`
+
+   
+          <div class="card data-table data-table-collapsible data-table-init">
                       <div class="card-header">
                         <div class="data-table-title">${list[i].email}</div>
 
@@ -506,8 +1088,8 @@ function GetKlanten() {
                         <table>
                          <thead>
                             <tr>
-                              <th class="label-cell">Id</th>
-                              <th class="label-cell">Naam</th>
+                              <th class="label-cell">ID</th>
+                              <th class="label-cell">Name</th>
                                  <th class="label-cell">status</th> 
                             </tr>
                          </thead>
@@ -529,15 +1111,15 @@ function GetKlanten() {
             var control = data;
 
             if (control == 1) {
-                app.dialog.alert('Geen records beschikbaar', 'Foutmelding');
+                app.dialog.alert('No records available', 'Error');
             }
 
         }, function (error, status) {
 
             if (status === 0) {
-                app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                app.dialog.alert('No internet connection', "Error");
             } else {
-                app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                app.dialog.alert('The server is not available right now.', "Error");
             }
         }
 
@@ -546,7 +1128,7 @@ function GetKlanten() {
 }
 
 function VerwijderKlant(intValue) {
-    app.dialog.confirm('Ben jij zeker dat jij deze klant wilt verwijderen ?', 'Verwijder controle', function () {
+    app.dialog.confirm('Are you sure you want to remove this account?', 'Confirmation', function () {
 
         var idKlant = intValue;
         SendAjaxKlant(idKlant);
@@ -554,7 +1136,7 @@ function VerwijderKlant(intValue) {
 }
 
 function ActiveerKlant(intValue) {
-    app.dialog.confirm('Ben jij zeker dat jij deze klant wilt activeren ?', 'Active controle', function () {
+    app.dialog.confirm('Are you sure you want to activate this account', 'Activation control', function () {
 
 
         var data = {};
@@ -570,10 +1152,11 @@ function ActiveerKlant(intValue) {
                 var control = data;
                 if (control == 1) {
                     app.preloader.hide();
-                    app.dialog.alert('Gekozen klant is met succes activeert', 'Activeren van de klant ');
-                    app.$f7router.navigate('/klanten/');
+                    app.dialog.alert('The chosen account has been activated successfully', 'Activation account ');
+                    app.view.current.router.navigate('/klanten/');
+                 
                 } else if (control == 2) {
-                    app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens');
+                    app.dialog.alert('An error has occurred. Please try again later.');
                 }
 
                 //mainView.router.loadPage('profiel.html');
@@ -581,9 +1164,9 @@ function ActiveerKlant(intValue) {
             }, function (error, status) {
 
                 if (status === 0) {
-                    app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                    app.dialog.alert('No internet connection', "Error");
                 } else {
-                    app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                    app.dialog.alert('The server is not available right now.', "Error");
                 }
 
             }
@@ -593,7 +1176,7 @@ function ActiveerKlant(intValue) {
 }
 
 function MeerInfoKlant(intValue) {
-
+    $$("div#popup.content-block-inner").empty();
     idInfo = intValue;
     var data = {};
     data.id = idInfo;
@@ -618,14 +1201,14 @@ function MeerInfoKlant(intValue) {
                           <thead>
                             <tr>
                               <th class="label-cell active">Id</th>
-                              <th class="label-cell">Naam</th>
-                              <th class="label-cell">Voornaam </th>
-                              <th class="label-cell">Geboortedatum</th>
-                                <th class="label-cell">Geslacht</th>
-                                <th class="label-cell">Adres</th>
-                                <th class="label-cell">Gemeente</th>
+                              <th class="label-cell">Last name</th>
+                              <th class="label-cell">First name </th>
+                              <th class="label-cell">Birthdate</th>
+                                <th class="label-cell">Gender</th>
+                                <th class="label-cell">Address</th>
+                                <th class="label-cell">Town</th>
                                 <th class="label-cell">Postcode</th>
-                                <th class="label-cell">Nummer</th>
+                                <th class="label-cell">Phone number</th>
                              
 
                          
@@ -674,10 +1257,10 @@ function SendAjaxKlant(idK) {
             var control = data;
             if (control == 1) {
                 app.preloader.hide();
-                app.dialog.alert('Gekozen Account is met succes verwijderd', 'Verwijderen van de profiel');
+                app.dialog.alert('Chosen account has been deleted', 'Success');
                 location.reload();
             } else if (control == 2) {
-                app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens');
+                app.dialog.alert('An error has occurred. Please try again later.');
             }
 
             //mainView.router.loadPage('profiel.html');
@@ -685,9 +1268,9 @@ function SendAjaxKlant(idK) {
         }, function (error, status) {
 
             if (status === 0) {
-                app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                app.dialog.alert('No internet connection', "Error");
             } else {
-                app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                app.dialog.alert('The server is not available right now.', "Error");
             }
 
         }
@@ -706,11 +1289,12 @@ function tecontacteren() {
             //console.log(status.responseText);
             //console.log(data);
             var list = (JSON.parse(status.responseText)).data;
-
+        
             var i;
+          
             for (i = 0; i < list.length; i++) {
-
-                $$("#contacten").append(`
+  $$(".contactText").empty();
+                $$(".contacten").append(`
                     <div class="card data-table data-table-collapsible data-table-init">
                       <div class="card-header">
                         <div class="data-table-title">${list[i].email}</div>
@@ -729,8 +1313,8 @@ function tecontacteren() {
                           <thead>
                             <tr>
                               <th class="label-cell active">Id</th>
-                              <th class="label-cell">Naam</th>
-                              <th class="label-cell">Nummer </th>
+                              <th class="label-cell">Name</th>
+                              <th class="label-cell">Phone number </th>
                               <th class="label-cell">Message</th>
                          
                             </tr>
@@ -748,21 +1332,14 @@ function tecontacteren() {
                       </div>
                     </div>
                         `);
-
-            }
-
-            var control = data;
-
-            if (control == 1) {
-                app.dialog.alert('Geen records beschikbaar', 'Foutmelding');
-            }
+                    }
 
         }, function (error, status) {
 
             if (status === 0) {
-                app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                app.dialog.alert('No internet connection', "Error");
             } else {
-                app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                app.dialog.alert('The server is not available right now.', "Error");
             }
         }
 
@@ -772,7 +1349,7 @@ function tecontacteren() {
 }
 
 function Verwijdercontact(intValue) {
-    app.dialog.confirm('Ben jij zeker dat jij deze Contact wilt verwijderen ?', 'Verwijder controle', function () {
+    app.dialog.confirm('Are you sure you want to delete this message?', 'Confirmation', function () {
 
 
         var data = {};
@@ -787,11 +1364,15 @@ function Verwijdercontact(intValue) {
                 app.preloader.show();
                 var control = data;
                 if (control == 1) {
-                    app.preloader.hide();
-                    app.dialog.alert('Gekozen Contact is met succes verwijderd', 'Verwijderen van de Contact Message');
-                    location.reload();
+                   
+                   
+                        app.preloader.hide();
+                        app.dialog.alert('Chosen message has been deleted', 'Success');
+                        backFunction();
+                       
+     
                 } else if (control == 2) {
-                    app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens');
+                    app.dialog.alert('An error has occurred. Please try again later.');
                 }
 
                 //mainView.router.loadPage('profiel.html');
@@ -799,9 +1380,9 @@ function Verwijdercontact(intValue) {
             }, function (error, status) {
 
                 if (status === 0) {
-                    app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                    app.dialog.alert('No internet connection', "Error");
                 } else {
-                    app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                    app.dialog.alert('The server is not available right now.', "Error");
                 }
 
             }
@@ -809,3 +1390,4 @@ function Verwijdercontact(intValue) {
         );
     });
 }
+

@@ -1,3 +1,15 @@
+.justifyClass{
+  text-align: justify;
+  text-justify: inter-word;
+}
+#specialText{
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 10%;
+  font-family: Arial Narrow, sans-serif;
+
+}
 
 #slider {
     position: relative;
@@ -129,3 +141,4 @@ img {
 .page > .tabs {
   height: 100%;
 }
+

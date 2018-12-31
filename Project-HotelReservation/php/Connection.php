@@ -1,10 +1,9 @@
 <?php
 
     $servername = "localhost"; // vervang dit door de servernaam die je van je hosting firma hebt ontvangen
- $username   = "id7578167_ohotel"; // vervang dit door de gebruikersnaam die je van je hosting firma hebt ontvangen
- $password   = "Emmy2110"; // vervang dit door het paswoord dat je van je hosting firma hebt ontvangen
-//    $username   = "root"; // vervang dit door de gebruikersnaam die je van je hosting firma hebt ontvangen
-//    $password   = ""; // vervang dit door het paswoord dat je van je hosting firma hebt ontvangen
+    $username   = "id7578167_ohotel"; // vervang dit door de gebruikersnaam die je van je hosting firma hebt ontvangen
+    $password   = "Emmy2110"; // vervang dit door het paswoord dat je van je hosting firma hebt ontvangen
+  
     $dbname     = "id7578167_ohotel"; // vervang dit door de naam van de databank die je van je hosting firma hebt ontvangen
 
     // Create connection

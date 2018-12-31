@@ -14,36 +14,37 @@
     <link rel="stylesheet" href="libs/framework7/css/framework7.min.css">
     <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/app.css">
+
 </head>
 
-<body>
+<body  class="color-theme-black">
 
 
-    <div id="app">
+    <div id="app" >
 
         <!-- Statusbar -->
         <f7-statusbar></f7-statusbar>
 
         <!-- Left Panel -->
-        <f7-panel left reveal theme-dark>
+        <f7-panel left reveal  theme-dark>
             <f7-view id="left-panel-view">
                 <f7-page>
                     <f7-navbar title="Menu"></f7-navbar>
 
                     <f7-block-title></f7-block-title>
                     <f7-list>
-                        <f7-list-item Link="/home/" title="Home" view="#main-view" panel-close></f7-list-item>
-                        <f7-list-item onclick="KamersOphalen();" link="/kamers/" title="Kamers" view="#main-view" panel-close></f7-list-item>
-                        <f7-list-item link="/contact/" title="Contact" view="#main-view" panel-close></f7-list-item>
-                        <f7-list-item link="/locatie/" title="Locatie" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item Link="/home/" title="Home" view="#main-view"  panel-close></f7-list-item>
+                        <f7-list-item onclick="KamersOphalen();" link="/kamers/" title="Rooms" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item link="/contact/" title="Contact"  view="#main-view"  panel-close></f7-list-item>
+                        <f7-list-item link="/locatie/" title="Location" view="#main-view"  panel-close></f7-list-item>
 
                     </f7-list>
 
                     <f7-list>
-                        <f7-list-item link="/login/" title="Book Now" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item link="/login/"  title="Book Now" view="#main-view" panel-close></f7-list-item>
 
                     </f7-list>
-                    <f7-block-title>2018</f7-block-title>
+                    <f7-block-title> <img  src="Images/Logo/OHotel_Icon.ico" style=" width: 60%;height: 40%; margin-top: 100%;" ></f7-block-title>
                 </f7-page>
             </f7-view>
         </f7-panel>
@@ -52,261 +53,243 @@
 
 
         <!-- Main View -->
-        <f7-view id="main-view" main class="view view-main  ">
-            <f7-page>
-                <f7-navbar>
-                    <f7-nav-left>
-                        <f7-link icon-if-ios="f7:menu" icon-if-md="material:menu" panel-open="left"></f7-link>
-                    </f7-nav-left>
-                    <f7-nav-title>O-Hotel </f7-nav-title>
-
-                </f7-navbar>
-
-                <f7-block strong>
-                    <p>O-hotel Brussels City Centre is centraal gelegen in hartje Brussel, vlak bij de grootste winkelstraat van de stad en 10 minuten van de Grote Markt. Het hotel is goed bereikbaar met het openbaar vervoer.</p>
-                    <p>Hieronder Kan jij fotos over ons htel raadplegen</p>
-
-                    <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="10" data-slides-per-view="auto" data-centered-slides="true" class="swiper-container swiper-init demo-swiper demo-swiper-auto">
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-wrapper">
-
-                            <div class="swiper-slide"><img src="Images/Badkamers/Screenshot%202018-11-05%20at%2013.51.17.png"></div>
-                            <div class="swiper-slide"><img src="Images/Badkamers/Screenshot%202018-11-05%20at%2014.36.14.png"></div>
-                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/2persoonskamer.jpg"></div>
-                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2013.51.26.png"></div>
-                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2013.51.43.png"></div>
-                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2014.35.39.png"></div>
-                            <div class="swiper-slide"><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2014.35.57.png"></div>
-                        </div>
-                    </div>
-
-                </f7-block>
-                <f7-block strong>
-
-                    <p>O-hotel heeft een uitstekend uitzicht, u kan zich lekker ontspannen. Het hotel is zeer mooi ingericht, het heeft een prachtige ligging en biedt een zwembad, een spabad en een fitnessruimte aan die u mag gebruiken. De meeste kamers
-                        zijn milieuvriendelijk en hebben een mooi uitzicht op de natuur. Ons hotel beschikt over een zeer gezellige sfeer. </p>
-                    <f7-swiper pagination navigation scrollbar>
-                        <f7-swiper-slide><img src="Images/Badkamers/Screenshot%202018-11-05%20at%2013.51.17.png">Slide 1</f7-swiper-slide>
-                        <f7-swiper-slide><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2013.51.26.png">Slide 2</f7-swiper-slide>
-                        <f7-swiper-slide><img src="Images/Tweepersoonskamer/Screenshot%202018-11-05%20at%2014.35.57.png">Slide 3</f7-swiper-slide>
-                    </f7-swiper>
-                </f7-block>
-
-            </f7-page>
-
+  
+        <f7-view id="main-view" main >
+         
             <div class="toolbar tabbar-labels toolbar-bottom-md">
-                <div class="toolbar-inner ">
-                    <a href="/home/" class="tab-link" id="hometab">
-                        <i class="icon f7-icons ios-only">home</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill">home_fill</i>
-                        <i class="icon material-icons md-only">home</i>
-                        <span class="tabbar-label">Home</span>
-                    </a>
-                    <a onclick="KamersOphalen();" href="/kamers/" class="tab-link " id="kamertab">
-                        <i class="icon f7-icons ios-only">list</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill">list_fill</i>
-                        <i class="icon material-icons md-only">view_list</i>
-                        <span class="tabbar-label">Kamers</span>
-                    </a>
-
-                    <a href="/login/" class="tab-link " id="logintab">
-                        <i class="icon f7-icons ios-only">account_box</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill ">account_box_fill</i>
-                        <i class="icon material-icons md-only ">account_box</i>
-                        <span class="tabbar-label">Login</span>
-                    </a>
+                    <div class="toolbar-inner ">
+                         <a  href="/home/"  view="#main-view" class="tab-link tab-link-active" id="hometab">
+                            <i class="icon f7-icons ios-only">home</i>
+                     
+                            <i class="icon material-icons md-only">home</i>
+                            <span class="tabbar-label">Home</span>
+                        </a>
+                      
+                        <a onclick="KamersOphalen();" href="/kamers/" view="#main-view" class="tab tab-link " id="kamertab">
+                            <i class="icon f7-icons ios-only">list</i>
+                     
+                            <i class="icon material-icons md-only">view_list</i>
+                            <span class="tabbar-label">Rooms</span>
+                        </a>
+    
+                        <a href="/login/"  view="#main-view" class="tab tab-link " id="logintab">
+                            <i class="icon f7-icons ios-only">account_box</i>
+                    
+                            <i class="icon material-icons md-only ">account_box</i>
+                            <span class="tabbar-label">Login</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-
         </f7-view>
+
+    
     </div>
 
 
+    
+  <!--Locatie pagina-->
+  <template id="locatie">
+    <f7-page>
+        <f7-navbar>
+            <f7-nav-left>
+              <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="backFunction()" ></f7-link>
+          </f7-nav-left>
+          <f7-nav-title>Location</f7-nav-title>
+          </f7-navbar>
+        <div class="login-screen-title"><img  src="./Images/image.png" style="width:20%; height:20%; margin-top: 40px;"></div>
+      
+        <f7-block >
+            <div class="google-maps">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.0396418738646!2d4.354253415795696!3d50.84895017953234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c38068797673%3A0xf3022078a3352beb!2sRue+Montagne+aux+Herbes+Potag%C3%A8res+26%2C+1000+Bruxelles!5e0!3m2!1sen!2sbe!4v1539944827618" width="auto" height="auto" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+        </f7-block>
+      </f7-page>
 
-
-
-    <!-- Kamers Pagina -->
-    <template id="kamers">
-        <f7-page>
-            <f7-navbar title="Kamers" back-link="Back"></f7-navbar>
-
-            <f7-block strong>
-                <div id="kamers" class="content-block-inner">
-
-
-                </div>
-            </f7-block>
-        </f7-page>
-
-    </template>
-
-    <!-- Contact Pagina -->
+  </template>
+     <!--Contact pagina-->
     <template id="contact">
-        <f7-page>
-            <f7-navbar title="Contact" back-link="Back"></f7-navbar>
-            <f7-block-title>Hieronder bevinden de contact gegeven</f7-block-title>
+     <f7-page>
+        <f7-navbar>
+            <f7-nav-left>
+              <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="backFunction()" ></f7-link>
+          </f7-nav-left>
+          <f7-nav-title>Contact</f7-nav-title>
+          </f7-navbar>
+        <div class="login-screen-title"><img  src="./Images/Contact.png" style="width:40%; height:40%; margin-top: 40px;"></div>
+        
+        <f7-list form>
+      
+            <f7-list-item>
+                <f7-label>Name</f7-label>
+                <f7-input type="text" placeholder="Name" id="nameContact"></f7-input>
+            </f7-list-item>
+      
+            <f7-list-item>
+                <f7-label>Email</f7-label>
+                <f7-input type="email" placeholder="Email" id="emailContact"></f7-input>
+            </f7-list-item>
+      
+            <f7-list-item>
+                <f7-label>Phone</f7-label>
+                <f7-input type="tel" placeholder="Phone number" id="gsmnummerContact"></f7-input>
+            </f7-list-item>
+      
+      
+            <f7-list-item>
+                <f7-label>Message</f7-label>
+                <f7-input type="textarea" placeholder="Type your message here..." id="messageContact"></f7-input>
+                <f7-button class="col" small round fill onclick="Contact();"> Send </f7-button>
+            </f7-list-item>
+      
+      
+        </f7-list>
+      
+      
+      </f7-page>
+
+
+
+</template>
+
+
+
+    <!--Login pagina-->
+<template id="login">
+
+  <f7-page data-pagination='{"el": ".ok"}'>
+    <f7-navbar>
+  <f7-nav-left>
+    <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="backFunction()" ></f7-link>
+</f7-nav-left>
+<f7-nav-title>Login</f7-nav-title>
+</f7-navbar>
+  <div class="login-screen-title"><img  src="./Images/login.png" style="width:50%; height:50%; margin-top: 60px;"></div>
+  <f7-block >
+       
+      <f7-list form id="test">
+          <f7-list-item>
+              <f7-label>Email</f7-label>
+              
+              <f7-input name="Email" placeholder="Email" type="email" id="LEmail" ></f7-input>
+          </f7-list-item>
+          <f7-list-item>
+              <f7-label>Password</f7-label>
+              <f7-input name="password" type="password"  placeholder="Password" id="Lpassword" ></f7-input>
+          </f7-list-item>
+
+          
+          <f7-button  class="col" small round fill onclick="checkLogin();" focus>Sign in</f7-button>
+
+          <p style="text-align: center;"> Click here to <a style="font-weight: bold;"href="/registratie/">Register</a></p>
+          <p style="text-align: center;"><a style="font-weight: bold;"href="/wachtwoordVergeten/">Forgot Password?</a></p>
+
+      </f7-list>
+  </f7-block>
+</f7-page>
+</template>
+   <!--Login pagina-->
+   <template id="wachtwoord">
+
+    <f7-page data-pagination='{"el": ".ok"}'>
+      <f7-navbar>
+    <f7-nav-left>
+      <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="app.view.current.router.navigate('/login/');" ></f7-link>
+  </f7-nav-left>
+  <f7-nav-title>Forgot Password</f7-nav-title>
+  </f7-navbar>
+    <div class="login-screen-title"><img  src="./Images/reset_password.png" style="width:50%; height:50%; margin-top: 60px;"></div>
+    <f7-block >
+        <f7-block-title>Please enter your email address to request a password.</f7-block-title>
+        <f7-list form id="test">
+            <f7-list-item>
+                <f7-label>Email</f7-label><br>
+                
+                <f7-input name="Email" placeholder="Abc@gmail.com" value="" type="email" id="ForgetEmail" ></f7-input>
+            </f7-list-item>
+          
+  
+            
+            <f7-button  class="col" small round fill onclick="PasswordForget();" focus>Send</f7-button>
+  
+        </f7-list>
+    </f7-block>
+  </f7-page>
+  </template>
+
+
+ <!--registration pagina-->
+<template id="registratie">
+    <f7-page>
+        <f7-navbar>
+            <f7-nav-left>
+              <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="app.view.current.router.navigate('/login/');" ></f7-link>
+          </f7-nav-left>
+          <f7-nav-title>Register</f7-nav-title>
+          </f7-navbar>
+        <f7-block-title>Please fill in all the fields to register.</f7-block-title>
+        <f7-block >
             <f7-list form>
-
                 <f7-list-item>
-                    <f7-label>Name</f7-label>
-                    <f7-input type="text" placeholder="Name" id="nameContact"></f7-input>
+                    <f7-label>First Name</f7-label>
+                    <f7-input type="text" placeholder="First Name" id="Voornaam"></f7-input>
                 </f7-list-item>
-
                 <f7-list-item>
-                    <f7-label>E-mail</f7-label>
-                    <f7-input type="email" placeholder="E-mail" id="emailContact"></f7-input>
+                    <f7-label>Last name</f7-label>
+                    <f7-input type="text" placeholder="last Name" id="Naam"></f7-input>
                 </f7-list-item>
-
+      
                 <f7-list-item>
                     <f7-label>Phone</f7-label>
-                    <f7-input type="tel" placeholder="Phone" id="gsmnummerContact"></f7-input>
+                    <f7-input type="tel" placeholder="Phone" id="Phone"></f7-input>
                 </f7-list-item>
-
-
                 <f7-list-item>
-                    <f7-label>Message</f7-label>
-                    <f7-input type="textarea" placeholder="Schrijf u vraag hier...." id="messageContact"></f7-input>
-                    <f7-button class="col" small round fill onclick="Contact();"> Send </f7-button>
+                    <f7-label>Gender</f7-label>
+                    <f7-input type="select" id="Geslacht">
+                        <option selected>Male</option>
+                        <option>Female</option>
+                    </f7-input>
                 </f7-list-item>
-
-
+                <f7-list-item>
+                    <f7-label>Birthdate</f7-label>
+                    <f7-input type="date" placeholder="Birth date" value="2014-04-30" id="Geboortedatum"></f7-input>
+                </f7-list-item>
+                <f7-list-item>
+                    <f7-label>Street</f7-label>
+                    <f7-input type="text" placeholder="Street" id="Straat"></f7-input>
+                </f7-list-item>
+                <f7-list-item>
+                    <f7-label>Town</f7-label>
+                    <f7-input type="text" placeholder="Town" id="Gemeente"></f7-input>
+      
+                </f7-list-item>
+                <f7-list-item>
+                    <f7-label>Postcode</f7-label>
+                    <f7-input type="text" placeholder="Postcode" id="Postcode"></f7-input>
+      
+                </f7-list-item>
+      
+                <f7-list-item>
+                    <f7-label>Email</f7-label>
+                    <f7-input type="email" placeholder="E-mail" id="Email"></f7-input>
+                </f7-list-item>
+      
+                <f7-list-item>
+                    <f7-label>Password</f7-label>
+                    <f7-input type="password" placeholder="Password" id="Password"></f7-input>
+                </f7-list-item>
+      
+                <f7-button   class="col" small round fill onclick="inschrijven();">Register</f7-button>
+      
+      
+      
             </f7-list>
+        </f7-block>
+      </f7-page>
+</template>
+    
+    <!-- Cordova 
 
-
-        </f7-page>
-
-    </template>
-
-    <!-- Locatie Pagina -->
-    <template id="locatie">
-        <f7-page>
-            <f7-navbar title="Locatie" back-link="Back"></f7-navbar>
-            <f7-block-title>Hieronder bevinden de contact gegeven</f7-block-title>
-            <f7-block strong>
-                <div class="google-maps">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.0396418738646!2d4.354253415795696!3d50.84895017953234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c38068797673%3A0xf3022078a3352beb!2sRue+Montagne+aux+Herbes+Potag%C3%A8res+26%2C+1000+Bruxelles!5e0!3m2!1sen!2sbe!4v1539944827618" width="auto" height="auto" frameborder="0" style="border:0" allowfullscreen></iframe></div>
-            </f7-block>
-        </f7-page>
-
-    </template>
-
-    <!-- Registratie Pagina -->
-    <template id="registratie">
-        <f7-page>
-            <f7-navbar title="Registereren" back-link="Back"></f7-navbar>
-            <f7-block-title>Gelieve alle velden in te vullen om te registereren</f7-block-title>
-            <f7-block strong>
-                <f7-list form>
-                    <f7-list-item>
-                        <f7-label>First Name</f7-label>
-                        <f7-input type="text" placeholder="First Name" id="Voornaam"></f7-input>
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Last name</f7-label>
-                        <f7-input type="text" placeholder="last Name" id="Naam"></f7-input>
-                    </f7-list-item>
-
-                    <f7-list-item>
-                        <f7-label>Phone</f7-label>
-                        <f7-input type="tel" placeholder="Phone" id="Phone"></f7-input>
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Gender</f7-label>
-                        <f7-input type="select" id="Geslacht">
-                            <option selected>Male</option>
-                            <option>Female</option>
-                        </f7-input>
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Birth date</f7-label>
-                        <f7-input type="date" placeholder="Birth date" value="2014-04-30" id="Geboortedatum"></f7-input>
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Street</f7-label>
-                        <f7-input type="text" placeholder="Street" id="Straat"></f7-input>
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Town</f7-label>
-                        <f7-input type="text" placeholder="Town" id="Gemeente"></f7-input>
-
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Postcode</f7-label>
-                        <f7-input type="text" placeholder="Postcode" id="Postcode"></f7-input>
-
-                    </f7-list-item>
-
-                    <f7-list-item>
-                        <f7-label>E-mail</f7-label>
-                        <f7-input type="email" placeholder="E-mail" id="Email"></f7-input>
-                    </f7-list-item>
-
-                    <f7-list-item>
-                        <f7-label>Password</f7-label>
-                        <f7-input type="password" placeholder="Password" id="Password"></f7-input>
-                    </f7-list-item>
-
-                    <f7-button class="col" small round fill onclick="inschrijven();">Register</f7-button>
-
-
-
-                </f7-list>
-            </f7-block>
-        </f7-page>
-
-    </template>
-    <!-- Login Pagina -->
-    <template id="login">
-        <f7-page>
-            <f7-navbar title="Login" back-link="Back"></f7-navbar>
-
-            <f7-block-title>Gelieve alle velden in te vullen om te Inloggen</f7-block-title>
-            <f7-block strong>
-                <f7-list form>
-                    <f7-list-item>
-                        <f7-label>Email</f7-label>
-                        <f7-input name="Email" placeholder="Email" type="text" id="LEmail"></f7-input>
-                    </f7-list-item>
-                    <f7-list-item>
-                        <f7-label>Password</f7-label>
-                        <f7-input name="password" type="password" placeholder="Password" id="Lpassword"></f7-input>
-                    </f7-list-item>
-
-                    <f7-list-item>
-                      
-                        <f7-label>User level</f7-label>
-                        <f7-input type="select" id="usrlevel">
-                            <option selected>klant</option>
-                            <option>admin</option>
-                        </f7-input>
-
-
-                    </f7-list-item>
-
-                    <f7-button class="col" small round fill onclick="checkLogin();">Sign in</f7-button>
-
-                    <p> Click here to <a href="/registratie/">Register</a></p>
-
-                </f7-list>
-            </f7-block>
-        </f7-page>
-
-    </template>
-
-    <!-- Page Not Found Template -->
-    <template id="page-not-found">
-        <f7-page>
-            <f7-navbar title="Not found" back-link="Back"></f7-navbar>
-            <f7-block strong>
-                <p>Sorry</p>
-                <p>Requested content not found.</p>
-            </f7-block>
-        </f7-page>
-    </template>
-    <!-- Cordova -->
-    <!--
-  <script src="cordova.js"></script>
-  -->
+  <script src="src/cordova.js"></script>
+-->
 
     <!-- Framework7 library -->
     <script src="libs/framework7/js/framework7.min.js"></script>

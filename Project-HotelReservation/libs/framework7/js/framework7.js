@@ -5997,6 +5997,7 @@
       if (separateNavbar) {
         // $oldNavbarInner = $navbarsInView.eq($pagesInView.length - 2);
         $oldNavbarInner = $$1(app.navbar.getElByPage($oldPage));
+        router.allowPageChange = true;
       }
     } else if (options.reloadAll) {
       $oldPage = $pagesInView.filter(function (index, pageEl) { return pageEl !== $newPage[0]; });

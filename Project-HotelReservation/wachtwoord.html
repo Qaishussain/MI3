@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#fff">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>O-Hotel</title>
+    <link rel="stylesheet" href="libs/framework7/css/framework7.min.css">
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="stylesheet" href="css/app.css">
+
+</head>
+
+<body  class="color-theme-black">
+
+
+    <div id="app" >
+
+        <!-- Statusbar -->
+        <f7-statusbar></f7-statusbar>
+
+        <!-- Left Panel -->
+        <f7-panel left reveal theme-dark>
+            <f7-view id="left-panel-view">
+                <f7-page>
+                    <f7-navbar title="Menu"></f7-navbar>
+
+                    <f7-block-title></f7-block-title>
+                   
+                    <f7-block-title>2018</f7-block-title>
+                </f7-page>
+            </f7-view>
+        </f7-panel>
+
+
+
+
+        <!-- Main View -->
+  
+        <f7-view id="main-view" main >
+                <f7-page>
+                        <f7-navbar>
+                            <f7-nav-left>
+                                <f7-link></f7-link>
+                            </f7-nav-left>
+                            <f7-nav-title>Change Password</f7-nav-title>
+                      
+                        </f7-navbar>
+                      
+                        <div class="login-screen-title"><img  src="./Images/change.png" style="width:30%; height:30%; margin-top: 60px;"></div>
+                      <f7-block >
+                           
+                          <div class="testF"></div>
+                      </f7-block>
+                      
+                      
+                  
+           </f7-page>
+           <div class="toolbar tabbar-labels toolbar-bottom-md">
+             
+            </div>
+        </f7-view>
+
+    
+    </div>
+
+
+ 
+    
+    <!-- Cordova 
+
+  <script src="src/cordova.js"></script>
+-->  
+
+    <!-- Framework7 library -->
+    <script src="libs/framework7/js/framework7.min.js"></script>
+
+    <!-- Vue -->
+    <script src="libs/vue/vue.min.js"></script>
+
+    <!-- Framework7-Vue plugin -->
+    <script src="libs/framework7-vue/framework7-vue.min.js"></script>
+
+    <!-- Your custom app scripts -->
+    <script src="js/wachtwoord.js"></script>
+
+    <script src="js/O-hotel.js" type="text/javascript"></script>
+    <script>
+               var wachtwoordEmail = sessionStorage.getItem("EmailChangePass");
+               console.log(wachtwoordEmail);
+               $$(".testF").append(`
+               <f7-list form>
+                             
+                             <f7-list-item>
+                                     <f7-label>E-mail</f7-label>
+                                     <f7-input type="email" id="Email" value="${wachtwoordEmail}" readonly></f7-input>
+                                 </f7-list-item>
+             
+                                       <f7-list-item>
+                                           <f7-label>New Password</f7-label>
+                                           <f7-input name="password" type="password"  placeholder="Password" id="cPassword" ></f7-input>
+                                       </f7-list-item>
+                                       <f7-list-item>
+                                       <f7-label>Re-enter Password</f7-label>
+                                       <f7-input name="password" type="password"  placeholder="Password" id="cRPassword" ></f7-input>
+                                   </f7-list-item>
+                                       
+                                       <f7-button  class="col" small round fill onclick="changepassword();" focus>Submit</f7-button>
+                               
+                                     
+                               
+                                   </f7-list> `);
+         
+                                   
+            
+     </script>
+</body>
+
+</html>

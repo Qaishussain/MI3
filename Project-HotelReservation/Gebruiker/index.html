@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body  class="color-theme-black">
 
 
 
@@ -36,9 +36,10 @@
 
                     <f7-block-title></f7-block-title>
                     <f7-list>
-                        <f7-list-item Link="/kamers/" title="Kamers" view="#main-view" panel-close></f7-list-item>
-                        <f7-list-item link="/reservation/" title="Reservaties" view="#main-view" panel-close></f7-list-item>
-                        <f7-list-item onclick="getProfile();" link="/account/" title="Account" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item Link="/kamers/" title="Rooms" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item link="/reservation/" onclick="reservatieTonen()" title="Reservations" view="#main-view" panel-close></f7-list-item>
+                        <f7-list-item onclick="getProfile();" link="/account/" title="Profile" view="#main-view"
+                            panel-close></f7-list-item>
 
                     </f7-list>
 
@@ -46,7 +47,7 @@
                         <f7-list-item onclick="afmelden();" title="Logout" view="#main-view" panel-close></f7-list-item>
 
                     </f7-list>
-                    <f7-block-title>2018</f7-block-title>
+                    <f7-block-title> <img  src="../Images/Logo/OHotel_Icon.ico" style=" width: 60%;height: 40%; margin-top: 120%;" ></f7-block-title>
                 </f7-page>
             </f7-view>
         </f7-panel>
@@ -56,67 +57,40 @@
 
         <!-- Main View -->
         <f7-view id="main-view" main>
-            <f7-page>
-                <f7-navbar>
-                    <f7-nav-left>
-                        <f7-link icon-if-ios="f7:menu" icon-if-md="material:menu" panel-open="left"></f7-link>
-                    </f7-nav-left>
-                    <f7-nav-title>Beschikbaar Kamers</f7-nav-title>
+           
 
-                </f7-navbar>
-
-                <f7-block strong>
-
-
-
-                    <div class="features-clean">
-                        <div class="container">
-
-                            <p class="text-center">U kunt met het hele gezin komen overnachten bij M-Hotel! Wij beschikken over meerdere soorten kamers waar u met uw gezin kunt overnachten. Onze kamers zijn van alle gemak en luxe voorzien.</p>
-                            <div id="kamersBeschikbaar" class="content-block-inner">
-
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-                </f7-block>
-
-            </f7-page>
 
             <div class="toolbar tabbar-labels toolbar-bottom-md">
                 <div class="toolbar-inner">
                     <a href="/kamers/" class="tab-link tab-link-active" id="kamertabGeb">
                         <i class="icon f7-icons ios-only">dashboard</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill">dashboard_fill</i>
+
                         <i class="icon material-icons md-only">dashboard</i>
-                        <span class="tabbar-label">Kamers</span>
+                        <span class="tabbar-label">Rooms</span>
                     </a>
-                    <a href="/reservation/" class="tab-link" id="reservationtab">
+                    <a href="/reservation/"  onclick ="reservatieTonen();"  class="tab-link" id="reservationtab">
                         <i class="icon f7-icons ios-only">view_list</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill">view_list_fill</i>
+
                         <i class="icon material-icons md-only">view_list</i>
                         <span class="tabbar-label">Reservations</span>
                     </a>
                     <a href="/account/" onclick="getProfile();" class="tab-link" id="accounttabGeb">
                         <i class="icon f7-icons ios-only">account_box</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill">account_box_fill</i>
+
                         <i class="icon material-icons md-only">account_box</i>
                         <span class="tabbar-label">Profile</span>
                     </a>
                     <a href="" onclick="afmelden();" class="tab-link" id="logout">
                         <i class="icon f7-icons ios-only">exit_to_app</i>
-                        <i class="icon f7-icons ios-only icon-ios-fill">exit_to_app_fill</i>
+
                         <i class="icon material-icons md-only">exit_to_app</i>
-                        <span class="tabbar-label">logout</span>
+                        <span class="tabbar-label">Logout</span>
                     </a>
 
 
                 </div>
             </div>
+
         </f7-view>
 
 
@@ -126,10 +100,25 @@
     <!-- reservation Pagina -->
     <template id="reservation">
         <f7-page>
-            <f7-navbar title="Reservaties" back-link="Back"></f7-navbar>
-            <f7-block-title>Reservaties</f7-block-title>
-            <f7-block strong>
+            <f7-navbar>
+                <f7-nav-left>
+                  <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="backFunction()" ></f7-link>
+              </f7-nav-left>
+              <f7-nav-title>Reservations</f7-nav-title>
+              </f7-navbar>
+            
+            <f7-block >
+                    <div class="login-screen-title">Booked</div>
+                <div class="reservatieUithalen" ></div>
+                <p class="reser" style="text-align:center;">No reservations available.</p>
 
+            </f7-block>
+        
+            <f7-block >
+                  
+                    <div class="login-screen-title">Cancelled</div>
+                <div class="CancelledReservations" ></div>
+                <p class="cancel" style="text-align:center;">No cancelled reservations.</p>
             </f7-block>
         </f7-page>
 
@@ -138,9 +127,15 @@
     <!-- account Pagina -->
     <template id="account">
         <f7-page>
-            <f7-navbar title="Profiel" back-link="Back"></f7-navbar>
-            <f7-block-title>Profiel Wijzigen</f7-block-title>
-            <f7-block strong>
+            <f7-navbar>
+                <f7-nav-left>
+                  <f7-link icon-if-ios="f7:keyboard_backspace" icon-if-md="material:keyboard_backspace" onclick="backFunction()" ></f7-link>
+              </f7-nav-left>
+              <f7-nav-title>Profile</f7-nav-title>
+              </f7-navbar>
+            <div class="login-screen-title"><img  src="../Images/login.png" style="width:20%; height:20%; margin-top: 20px;"></div>
+            
+            <f7-block >
                 <f7-list form>
                     <f7-list-item>
                         <f7-label>Nr.</f7-label>
@@ -152,42 +147,42 @@
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label>Last name</f7-label>
-                        <f7-input type="text" id="Naam" required></f7-input>
+                        <f7-input type="text" id="Naam"></f7-input>
                     </f7-list-item>
 
                     <f7-list-item>
                         <f7-label>Phone</f7-label>
-                        <f7-input type="tel" id="Phone" required></f7-input>
+                        <f7-input type="tel" id="Phone"></f7-input>
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label>Gender</f7-label>
-                        <f7-input type="select" id="Geslacht" required>
+                        <f7-input type="select" id="Geslacht">
                             <option selected>Male</option>
                             <option>Female</option>
                         </f7-input>
                     </f7-list-item>
                     <f7-list-item>
-                        <f7-label>Birth date</f7-label>
-                        <f7-input type="date" id="Geboortedatum" required></f7-input>
+                        <f7-label>Birthdate</f7-label>
+                        <f7-input type="date" id="Geboortedatum"></f7-input>
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label>Street</f7-label>
-                        <f7-input type="text" id="Straat" required></f7-input>
+                        <f7-input type="text" id="Straat"></f7-input>
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label>Town</f7-label>
-                        <f7-input type="text" id="Gemeente" required></f7-input>
+                        <f7-input type="text" id="Gemeente"></f7-input>
 
                     </f7-list-item>
                     <f7-list-item>
                         <f7-label>Postcode</f7-label>
-                        <f7-input type="text" id="Postcode" required></f7-input>
+                        <f7-input type="text" id="Postcode"></f7-input>
 
                     </f7-list-item>
 
                     <f7-list-item>
-                        <f7-label>E-mail</f7-label>
-                        <f7-input type="email" id="Email" readonly required></f7-input>
+                        <f7-label>Email</f7-label>
+                        <f7-input type="email" id="Email" readonly></f7-input>
                     </f7-list-item>
 
                     <f7-list-item>
@@ -195,9 +190,9 @@
                         <f7-input type="password" id="Password"></f7-input>
                     </f7-list-item>
 
-                    <f7-button class="col" @click="$f7router.navigate('/account/')" small round fill onclick="AccountBewerken();">Bewerken</f7-button><br>
+                    <f7-button class="col"  small round fill onclick="AccountBewerken();">Edit</f7-button><br>
 
-                    <f7-button class="col" small round fill onclick="AccountVerwijderen();">Verwijder mijn account</f7-button>
+                    <f7-button class="col" small round fill onclick="AccountVerwijderen();">Delete account</f7-button>
 
 
 
@@ -209,16 +204,39 @@
 
     </template>
 
+    <!--Booking Form-->
+    <template id="BookingForm">
+        <f7-page>
+            <f7-navbar title="Booking Formulier" back-link="Back"></f7-navbar>
+            <f7-block-title>Booking details</f7-block-title>
+            <f7-block strong>
+                <div class="features-clean">
+                    <div class="container">
+                            
+
+                        <div id="BookNowForm" class="content-block-inner">
+                              
+
+                        </div>
+                    </div>
+
+                </div>
 
 
-    <!-- Booking popup -->
+
+            </f7-block>
+
+        </f7-page>`
+    </template>
+
+    <!-- Booking popup 
 
        <div class="popup" id="MyPopupBooking">
       <div class="view">
         <div class="page">
           <div class="navbar">
             <div class="navbar-inner">
-              <div class="title">Kamer Info Bewerken</div>
+              <div class="title">Book Formulier</div>
               <div class="right">
                 <a href="#"  class="link popup-close" @click="$f7router.navigate('/kamers/')">Close</a>
               </div>
@@ -226,29 +244,33 @@
           </div>
           <div class="page-content">
             <div class="block">
-                <div id="popupBooking" class="content-block-inner"></div>
+                <div id="popupBooking" class="content-block-inner">
+                   
+                </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-  
+    -->
+
     <!-- popup -->
     <div class="popup" id="MyPopup">
         <div class="view">
             <div class="page">
                 <div class="navbar">
                     <div class="navbar-inner">
-                        <div class="title">Klant Info</div>
+                        <div class="title">Room information</div>
                         <div class="right">
-                            <a href="#" class="link popup-close" onclick="popFunction();">Close</a>
+                            <a href="#" class="link popup-close">Close</a>
                         </div>
                     </div>
                 </div>
                 <div class="page-content">
                     <div class="block">
-                        <div id="popup" class="content-block-inner"></div>
+                        <div id="popup" class="content-block-inner">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -286,6 +308,8 @@
     <script src="js/app.js"></script>
 
     <script src="js/O-hotel.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
 
 </body>
 

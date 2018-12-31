@@ -5,6 +5,7 @@
 
 var $$ = Dom7;
 var link = 'https://o-hotel.000webhostapp.com/php/gegevens.php';
+
 var app = new Framework7({
     root: '#app', // App root element
     id: 'io.framework7.testapp', // App bundle ID
@@ -14,13 +15,48 @@ var app = new Framework7({
 
 });
 
-//Swiper
-var swiper = app.swiper.get('.swiper-container');
-swiper.slideNext();
+var ajaxoef = new XMLHttpRequest();
+
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+$$(document).on('click','a', function () {
+    //define link
+    var link = $$(this);
+
+    //put link in timetout context, we need wait 1400 ms until animation finish then we can start animation to hide ripple effect
+    setTimeout(function (link_a) {
+        return function () {
+            //we find all ripples -> for each of them we start hide animation -> then we need to wait another 1400 ms until finish application
+            link_a.find(".ripple-wave").each(function (index, ripple) {
+                $$(ripple).css('opacity', 0);
+
+                setTimeout(function (ripple) {
+                    return function () {
+                        $$(ripple).remove();
+                    }
+                }(ripple), 500);
+
+            })
+        }
+}(link), 500);   });
+window.onload =test;
+
 
 
 var Email = "";
+function test (){
 
+    app.view.current.router.navigate('/home/');
+    
+}
+
+function backFunction(){
+       
+    app.view.current.router.navigate('/home/');
+ 
+ }
 // het deactiveren van focus op tab id's
 
 $$('#kamertab').click(function () {
@@ -49,44 +85,55 @@ $$('#logintab').click(function () {
 });
 
 function Contact() {
-    var nameContact = $$('#nameContact').val();
+    var nameContact = $$('#nameContact.input-with-value').val();
+    
 
-    var emailContact = $$('#emailContact').val();
+    var emailContact = $$('#emailContact.input-with-value').val();
 
-    var gsmContact = $$('#gsmnummerContact').val();
-    var messageContact = $$('#messageContact').val();
+    var gsmContact = $$('#gsmnummerContact.input-with-value').val();
+    var messageContact = $$('#messageContact.input-with-value').val();
+    
+     console.log(nameContact , gsmContact , emailContact, messageContact);
 
     if (!nameContact || !emailContact || !gsmContact || !messageContact) {
 
-        app.dialog.alert('Gelieve alle tekstvelden in te vullen', 'Lege tekstvelden');
+        app.dialog.alert('Please fill in all the fiels.', 'Missing text fields');
+        return;
+    } else if (!validateEmail(emailContact)) {
+        app.dialog.alert('Please enter a valid email address. ' + "> " + emailContact + " <", ' Email problem');
         return;
     } else {
         var data = {};
         data.bewerking = "contactgegevens";
-        data.nameContact = $$("#nameContact").val();
-        data.emailContact = $$("#emailContact").val();
-        data.gsmContact = $$("#gsmnummerContact").val();
-        data.messageContact = $$("#messageContact").val();
+        data.nameContact =nameContact;
+        data.emailContact = emailContact;
+        data.gsmContact = gsmContact;
+        data.messageContact = messageContact;
+      
         app.request.post(link, data, function (data) {
-                app.preloader.show();
+         
+                //app.preloader.show();
                 var control = data;
                 if (control == 1) {
-                    app.dialog.alert('U Formulier is met succes doorgestuurd. We contacteren u zo snel mogelijk.', 'Beste ' + nameContact, function () {
+                    app.preloader.hide();
+                    app.dialog.alert('Your message has been delivered successfully. We will contact you as soon as possible.', 'Dear ' + nameContact, function () {
                         window.location.href = "index.html";
                     });
 
                 } else if (control == 2) {
-                    app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens', data.nameContact);
+                    app.preloader.hide();
+                    app.dialog.alert('A problem has occurred. Please try again later.', data.nameContact);
                 } else if (control == 3) {
+                    app.preloader.hide();
                     app.dialog.alert('Missing data', data.nameContact);
                 }
             }, function (error, status) {
 
                 if (status === 0) {
-                    app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                    app.dialog.alert('No internet connection.', "Error");
 
                 } else {
-                    app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                    app.dialog.alert('The server is not available right now.', "Error");
 
                 }
 
@@ -100,18 +147,19 @@ function Contact() {
 }
 
 function KamersOphalen() {
-
+   
     var data = {};
     data.bewerking = "GetKamers";
     app.request.post(link, data, function (data, responseText, status) {
 
-            // console.log(data);
+             //console.log(data);
             var list = (JSON.parse(status.responseText)).data;
 
             var i;
+            $$(".InfoK").empty();
             for (i = 0; i < list.length; i++) {
-
-                $$("#kamers").append(`
+               
+                $$(".InfoK").append(`
                 <div class="card data-table data-table-collapsible data-table-init">
                     <f7-card>
  <div class="card-header">
@@ -122,14 +170,14 @@ function KamersOphalen() {
 </div>
                  
    
-               <p > <img src="Images/foto${list[i].kamer_id}.jpg" style="width: 100%;height:auto;">  </p>
+               <p > <img src="Images/foto${list[i].soort_id}.jpg" style="width: 100%;height:auto;">  </p>
 
 
                         <f7-card-content>
-                        <h4 style="padding-left: 10px;" >Informatie</h4>
+                        <h4 style="padding-left: 10px;" >Information</h4>
                             <p class="date"></p>
                             <p style="padding-left: 10px;">${list[i].beschrijving}</p>
-                    <h4 style="padding-left: 10px;" >Prijs: ${list[i].prijs} € </h4>
+                    <h4 style="padding-left: 10px;" >Price: ${list[i].prijs} € </h4>
             
                         </f7-card-content>
                   
@@ -143,15 +191,15 @@ function KamersOphalen() {
             var control = data;
 
             if (control == 1) {
-                app.dialog.alert('Geen records beschikbaar', 'Foutmelding');
+                app.dialog.alert('No records available.', 'Error');
             }
 
         }, function (error, status) {
 
             if (status === 0) {
-                app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                app.dialog.alert('No internet connection.', "Error");
             } else {
-                app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                app.dialog.alert('The server is not available right now.', "Error");
             }
         }
 
@@ -159,29 +207,34 @@ function KamersOphalen() {
 
 
 }
+
+
 function inschrijven() {
-    var email = $$('#Email').val();
-    var password = $$('#Password').val();
-    var voornaam = $$('#Voornaam').val();
-    var naam = $$('#Naam').val();
-    var straat = $$('#Straat').val();
-    var gemeente = $$('#Gemeente').val();
-    var postcode = $$('#Postcode').val();
-    var geboortedatum = $$('#Geboortedatum').val();
-    var geslacht = $$('#Geslacht').val();
-    var phone = $$('#Phone').val();
+    var email = $$('#Email.input-with-value').val();
+    var password = $$('#Password.input-with-value').val();
+    var voornaam = $$('#Voornaam.input-with-value').val();
+    var naam = $$('#Naam.input-with-value').val();
+    var straat = $$('#Straat.input-with-value').val();
+    var gemeente = $$('#Gemeente.input-with-value').val();
+    var postcode = $$('#Postcode.input-with-value').val();
+    var geboortedatum = $$('#Geboortedatum.input-with-value').val();
+    var geslacht = $$('#Geslacht.input-with-value').val();
+    var phone = $$('#Phone.input-with-value').val();
 
 
-    var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+   
 
 
 
 
     if (!email || !password || !voornaam || !naam || !phone || !straat || !gemeente || !postcode || !geboortedatum) {
-        app.dialog.alert('Gelieve alle tekstvelden in te vullen', 'Lege tekstvelden');
+        app.dialog.alert('Please fill in all the fiels.', 'Missing text fields');
         return;
-    } else if (email == '' || !re.test(email)) {
-        app.dialog.alert('Please enter a valid email address. ' + email, ' Probleem');
+    } else if (!validateEmail(email)) {
+        app.dialog.alert('Please enter a valid email address. ' + "> " + email + " <", ' Email problem');
+        return false;
+    } else if (password.length < 8) {
+        app.dialog.alert('Password with minimum 8 characters ', ' Error password');
         return false;
     } else {
 
@@ -209,18 +262,22 @@ function inschrijven() {
                 app.dialog.close();
                 if (control == 1) {
 
-                    app.dialog.alert(' U bent met succes ingeschreven.', 'Beste ' + voornaam);
-                    //window.location.reload();
+                    app.dialog.alert(' You have been registered successfully.', 'Dear ' + voornaam);
+                    setTimeout(function () {
+                        app.view.current.router.navigate('/login/'); 
+                      }, 3000);
+                    
+                    
+                    
               
-                   
 
 
                 } else if (control == 2) {
-                    app.dialog.alert('Er is een fout opgetreden, Probeer straks nog eens', 'Probleem melding');
+                    app.dialog.alert('A problem has occurred. Please try again later.', 'Error');
                     window.location.reload();
                 } else if (control == 3) {
                     //  app.preloader.hide();
-                    app.dialog.alert('Dit Email adres bestaat er al, gelieve een ander email adres in te geven', 'Probleem melding ');
+                    app.dialog.alert('This email already exists. Please use a different email.', 'Error ');
                     //window.location.reload();
 
 
@@ -232,9 +289,9 @@ function inschrijven() {
             }, function (error, status) {
 
                 if (status === 0) {
-                    app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                    app.dialog.alert('No internet connection.', "Error");
                 } else {
-                    app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                    app.dialog.alert('The server is not available right now.', "Error");
                 }
 
             }
@@ -243,42 +300,96 @@ function inschrijven() {
     }
 }
 
+function PasswordForget(){
+    var link2 = "https://o-hotel.000webhostapp.com/php/verzendmail.php"; 
+    var email = $$('#ForgetEmail.input-with-value').val();
+    if (!email) {
+        app.dialog.alert('Please fill in your email.', 'Missing fields');
+        return;
+    }else if (!validateEmail(email)) {
+        app.dialog.alert('Please enter a valid email address. ' + "> " + email + " <", ' Email problem');
+        return;
+    }else{
+        var data = {};
+        data.email = email;
+        app.request.post(link2, data, function (data) {
+            console.log(data);
+            var control = data;
+            if(control == 1){
+                app.dialog.alert('Check your email inbox', "Sent");
+                app.view.current.router.navigate('/login/'); 
+            }
+
+        }, function (error, status) {
+
+                if (status === 0) {
+                    app.dialog.alert('No internet connection', "Error");
+                } else {
+                    app.dialog.alert('The server is not available right now.', "Error");
+                }
+
+            }
+
+        );
+
+
+    }
+}
+
 function checkLogin() {
 
-    var email = $$('#LEmail').val();
-    var password = $$('#Lpassword').val();
-    var usrlvl = $$('#usrlevel').val();
 
-    if (!email || !password || !usrlvl) {
-        app.dialog.alert('Gelieve alles in te vullen & selecteren', 'Lege tekstvelden');
+   
+  var email = $$('input#LEmail.input-with-value').val();
+ 
+ 
+  var password = $$('input#Lpassword.input-with-value').val();
+  console.log(password ,  email);
+  
+   if(email =="Ohotel007@gmail.com" || email =="ohotel007@gmail.com"){
+    var usrlvl = "admin";
+   }else{
+    usrlvl = "klant";
+   }
+  // app.dialog.alert(email + password + usrlvl  , 'Testen');
+  
+    //app.dialog.alert("email= " + email + "password: " + password + "usrlevel: " + usrlvl);
+
+    if (!email || !password || !usrlvl ) {
+        app.dialog.alert('Please fill in all the fields.', 'Missing fields');
         return;
+    }else if (!validateEmail(email)) {
+  
+        app.dialog.alert('Please enter a valid email address. ' + "> " + email + " <", ' Email problem');
+        return ;
     } else {
         var data = {};
         data.bewerking = "check";
-        data.usrlvl = $$('#usrlevel').val();
-        data.Gebruikersnaam = $$("#LEmail").val();
-        data.Wachtwoord = $$("#Lpassword").val();
-
-        app.request.post(link, data, function (data, status, XHR) {
+        data.usrlvl = usrlvl;
+        data.Gebruikersnaam = email;
+        data.Wachtwoord = password;
+console.log(data);
+        app.request.post(link, data, function (data) {
+            console.log(data);
                 app.preloader.show();
 
                 var control = data;
                 app.preloader.hide();
                 if (control == "success") {
 
-                    loginsuccess();
+                    loginsuccess(usrlvl);
 
                 } else if (control == 2) {
 
-                    app.dialog.alert("Password incorrect.", "Foutmelding");
+                    app.dialog.alert("Password incorrect.", "Error");
                     app.preloader.hide();
                 } else if (control == 3) {
 
-                    app.dialog.alert("Gegevens bestaan niet.", "Foutmelding");
+                    app.dialog.alert("Data does not exist.", "Error");
                     app.preloader.hide();
                 } else if (control == 4) {
 
-                    app.dialog.alert("Account is deactiveerd. Neem contact op via de contactpagina. ", "Foutmelding");
+                    app.dialog.alert("Account has been deactivated. Get in contact with the admin via the contact page. ", "Error");
                     app.preloader.hide();
                 }
 
@@ -286,11 +397,10 @@ function checkLogin() {
             }, function (error, status) {
 
                 if (status === 0) {
-                    app.dialog.alert('Geen internetverbinding', "Foutmelding");
+                    app.dialog.alert('No internet connection', "Error");
                 } else {
-                    app.dialog.alert('De server is momenteel niet toegankelijk', "Foutmelding");
+                    app.dialog.alert('The server is not available right now.', "Error");
                 }
-
             }
 
         );
@@ -298,9 +408,9 @@ function checkLogin() {
     }
 }
 
-function loginsuccess() {
-    var usrlvl = $$('#usrlevel').val();
-    var getInput = $$('#LEmail').val();
+function loginsuccess(level) {
+    var usrlvl = level;
+    var getInput = $$('#LEmail.input-with-value').val();
     //console.log(getInput);
     if (usrlvl == "klant") {
         sessionStorage.setItem("Email", getInput);
@@ -315,3 +425,58 @@ function loginsuccess() {
 
 }
 
+
+
+function changepassword(){
+
+    var email = $$('#Email.input-with-value').val();
+ 
+ 
+    var password = $$('#cPassword.input-with-value').val();
+    var reEnterpassword = $$('#cRPassword.input-with-value').val();
+    
+    if (!password || !reEnterpassword ) {
+        app.dialog.alert('Please fill in all the fields.', 'Missing fields');
+        return;
+    }else if(password !=reEnterpassword){
+        app.dialog.alert('Passwords do not match', 'Error');
+        return;
+    }else if (password.length < 8) {
+        app.dialog.alert('Password with minimum 8 characters ', ' Error');
+        return false;
+    }else {
+        //console.log(email , password , reEnterpassword);
+        var data = {};
+        data.email = email;
+        data.password = password;
+        data.bewerking = "changePassword"
+
+        app.request.post(link, data, function (data) {
+            console.log(data);
+            var control = data;
+            if(control == 1){
+                app.dialog.alert("Password has been updated successfully", "Sucess", function () {
+                    sessionStorage.clear();
+                    window.location.href = "./index.html";
+                });
+            }else{
+                app.dialog.alert("There was a problem whilst changing the password. Please try agian later", "Error", function () {
+                    sessionStorage.clear();
+                    window.location.href = "./index.html";
+                });
+            }
+            
+        }, function (error, status) {
+
+            if (status === 0) {
+                app.dialog.alert('No internet connection', "Error");
+            } else {
+                app.dialog.alert('The server is not available right now.', "Error");
+            }
+
+        }
+        );
+
+    }
+    
+}
